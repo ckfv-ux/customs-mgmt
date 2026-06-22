@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통관 Invoice 등록</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif; font-size: 13px; background: #f5f6f8; color: #1a1a2e; }
+.page-container { max-width: 1200px; margin: 0 auto; padding: 20px 24px 100px; }
+.breadcrumb { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+.breadcrumb a { color: #2563eb; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.page-title { font-size: 20px; font-weight: 700; color: #111827; }
+
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 16px; }
+.card-header { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; font-size: 14px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 8px; }
+.card-body { padding: 16px 20px; }
+
+.btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: background .15s; }
+.btn-ghost { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
+.btn-ghost:hover { background: #f3f4f6; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+
+/* 입력 폼 */
+.form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.form-grid .fg { display: flex; flex-direction: column; }
+.form-grid .fg.span2 { grid-column: span 2; }
+.form-grid label { font-size: 11px; font-weight: 600; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; }
+.form-grid input, .form-grid select { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; color: #111827; outline: none; }
+.form-grid input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.1); }
+
+/* Invoice 프리뷰 */
+.invoice-preview { border: 2px solid #1e40af; border-radius: 4px; padding: 0; background: #fff; font-family: 'Courier New', monospace; font-size: 11px; }
+.inv-header { display: flex; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #d1d5db; }
+.inv-header-left { line-height: 1.6; }
+.inv-header-right { text-align: right; }
+.inv-title { font-size: 18px; font-weight: 700; color: #1e40af; letter-spacing: 2px; }
+.inv-field { display: flex; gap: 8px; margin-top: 4px; }
+.inv-field-label { color: #6b7280; font-weight: 600; min-width: 90px; }
+.inv-field-value { color: #111827; font-weight: 700; }
+
+.inv-parties { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #d1d5db; }
+.inv-party { padding: 12px 20px; line-height: 1.5; }
+.inv-party:first-child { border-right: 1px solid #d1d5db; }
+.inv-party-title { font-weight: 700; color: #1e40af; margin-bottom: 4px; }
+
+.inv-table { width: 100%; border-collapse: collapse; }
+.inv-table th { background: #eef2ff; color: #1e40af; font-weight: 700; padding: 8px 10px; text-align: center; border: 1px solid #d1d5db; font-size: 11px; }
+.inv-table td { padding: 6px 10px; border: 1px solid #e5e7eb; vertical-align: middle; }
+.inv-table .amt { text-align: right; font-weight: 600; }
+.inv-table .center { text-align: center; }
+.inv-table .left { text-align: left; }
+.inv-table input { width: 100%; padding: 4px 6px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 11px; font-family: inherit; outline: none; background: #fffef0; }
+.inv-table input:focus { border-color: #2563eb; background: #fff; }
+.inv-table input.amt-input { text-align: right; }
+
+.inv-total { display: flex; justify-content: flex-end; padding: 12px 20px; border-top: 2px solid #1e40af; gap: 20px; align-items: center; }
+.inv-total-label { font-weight: 700; color: #374151; font-size: 13px; }
+.inv-total-value { font-size: 16px; font-weight: 700; color: #1e40af; }
+
+.inv-footer { padding: 12px 20px; border-top: 1px solid #d1d5db; line-height: 1.6; color: #6b7280; }
+
+/* 태그 */
+.tag-fab { background: #dbeafe; color: #1d4ed8; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.tag-ip  { background: #fef9c3; color: #854d0e; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+
+/* 하단 고정 바 */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 28px; display: flex; align-items: center; gap: 12px; justify-content: flex-end; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,.08); }
+.btn-submit { background: #16a34a; color: #fff; padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
+.btn-submit:hover { background: #15803d; }
+.btn-back { background: transparent; color: #6b7280; border: 1px solid #d1d5db; padding: 8px 18px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+.btn-back:hover { background: #f3f4f6; }
+
+.no-items { text-align: center; padding: 60px; color: #9ca3af; }
+.no-items a { color: #2563eb; }
+</style>
+</head>
+<body>
+<div class="page-container">
+  <div class="breadcrumb"><a href="수출입통관관리.html">← 통관 대상 현황</a> &gt; <span>통관 Invoice 등록</span></div>
+  <div class="page-header">
+    <h1 class="page-title">수입신고용 Invoice 등록</h1>
+  </div>
+
+  <div id="no-items" class="card no-items hidden">
+    선택된 항목이 없습니다. <a href="수출입통관관리.html">통관 대상 현황</a>에서 항목을 선택해주세요.
+  </div>
+
+  <div id="main-content">
+    <!-- 1. 통관 기본정보 -->
+    <div class="card">
+      <div class="card-header">1. 통관 기본정보</div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="fg"><label>CI No. (통관 Invoice No.) *</label><input type="text" id="ci-no" placeholder="CI-2026-XXXX-XX"></div>
+          <div class="fg"><label>통관일 (Invoice Date) *</label><input type="date" id="ci-date"></div>
+          <div class="fg"><label>수입신고번호</label><input type="text" id="decl-no" placeholder="신고 후 기입"></div>
+          <div class="fg"><label>통관 구분</label>
+            <select id="ci-type">
+              <option value="import">수입통관</option>
+              <option value="duty-free">무관세</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Invoice 프리뷰 -->
+    <div class="card">
+      <div class="card-header">2. 수입신고용 Invoice 미리보기</div>
+      <div class="card-body" style="padding:0;">
+        <div class="invoice-preview">
+          <!-- Header -->
+          <div class="inv-header">
+            <div class="inv-header-left">
+              <div style="font-weight:700;font-size:13px;">TAIWAN SEMICONDUCTOR MANUFACTURING CO.,LTD</div>
+              <div>No. 8, Li-Hsin Rd, VI</div>
+              <div>SCIENCE BASED INDUSTRIAL PARK</div>
+              <div>HSIN-CHU 300. TAIWAN</div>
+              <div>TEL:886-3-5636688 FAX:886-3-5637000</div>
+            </div>
+            <div class="inv-header-right">
+              <div class="inv-title">INVOICE</div>
+              <div class="inv-field"><span class="inv-field-label">INVOICE NO.</span><span class="inv-field-value" id="prev-ci-no">—</span></div>
+              <div class="inv-field"><span class="inv-field-label">INVOICE DATE</span><span class="inv-field-value" id="prev-ci-date">—</span></div>
+            </div>
+          </div>
+
+          <!-- Parties -->
+          <div class="inv-parties">
+            <div class="inv-party">
+              <div class="inv-party-title">SHIP TO :</div>
+              <div>ASICLAND Co., Ltd.</div>
+              <div>309, Richplaza3, Daehak-ro60</div>
+              <div>Yeongtong-gu, Suwon-si, Gyeonggi-do</div>
+              <div>SOUTH KOREA</div>
+            </div>
+            <div class="inv-party">
+              <div class="inv-party-title">BILL TO :</div>
+              <div>ASICLAND Co., Ltd.</div>
+              <div>309, Richplaza3, Daehak-ro60</div>
+              <div>Yeongtong-gu, Suwon-si, Gyeonggi-do</div>
+              <div>SOUTH KOREA</div>
+            </div>
+          </div>
+
+          <!-- Item Table -->
+          <table class="inv-table">
+            <thead>
+              <tr>
+                <th style="width:35px;">No.</th>
+                <th style="width:50px;">단계</th>
+                <th style="min-width:140px;">CUSTOMER ORDER / PRODUCT</th>
+                <th style="min-width:180px;">DESCRIPTION</th>
+                <th style="width:100px;">UNIT PRICE (USD)</th>
+                <th style="width:60px;">QTY</th>
+                <th style="width:120px;">AMOUNT (USD)</th>
+                <th style="width:100px;">HS CODE</th>
+              </tr>
+            </thead>
+            <tbody id="inv-items"></tbody>
+            <tfoot>
+              <tr style="background:#f8f9fb;">
+                <td colspan="6" style="text-align:right;font-weight:700;border-top:2px solid #1e40af;">TOTAL INVOICE AMOUNT DUE :</td>
+                <td class="amt" style="font-weight:700;font-size:13px;color:#1e40af;border-top:2px solid #1e40af;" id="inv-total">$0.00</td>
+                <td style="border-top:2px solid #1e40af;"></td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- Footer -->
+          <div class="inv-footer">
+            <div>PAYMENT TERMS: 100% down payment - cash with order</div>
+            <div>DELIVERY TERMS: EXW-TSMC</div>
+            <div>ORIGIN: TAIWAN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 선택 항목 요약 -->
+    <div class="card">
+      <div class="card-header">3. 통관 대상 항목 (<span id="item-count">0</span>건)</div>
+      <div class="card-body" style="padding:0;">
+        <table class="inv-table" style="font-family:-apple-system,sans-serif;">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>단계</th>
+              <th>과제</th>
+              <th>고객사</th>
+              <th>외주처</th>
+              <th>AL Code</th>
+              <th>ITEM</th>
+              <th>Invoice Amt($)</th>
+              <th>통관대상($)</th>
+              <th>기통관($)</th>
+              <th style="background:#fffef0;">이번 통관금액($) *</th>
+              <th>HS Code *</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody id="detail-items"></tbody>
+          <tfoot>
+            <tr style="background:#f0fdf4;">
+              <td colspan="10" style="text-align:right;font-weight:700;">이번 통관 합계:</td>
+              <td class="amt" style="font-weight:700;color:#15803d;" id="detail-total">$0.00</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하단 바 -->
+  <div class="bottom-bar">
+    <span style="margin-right:auto;font-size:13px;color:#6b7280;" id="bottom-summary"></span>
+    <button class="btn-back" onclick="window.location.href='수출입통관관리.html'">← 돌아가기</button>
+    <button class="btn-submit" onclick="registerInvoice()">통관 등록 완료</button>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmtUsd=n=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+let items=[];
+try { items=JSON.parse(localStorage.getItem('customsInvoiceItems')||'[]'); } catch(e){}
+
+if(!items.length){
+  $('no-items').classList.remove('hidden');
+  $('main-content').style.display='none';
+}
+
+// 오늘 날짜 기본값
+const today=new Date().toISOString().slice(0,10);
+$('ci-date').value=today;
+
+// CI No. / Date 실시간 반영
+$('ci-no').addEventListener('input',()=>{$('prev-ci-no').textContent=$('ci-no').value||'—';});
+$('ci-date').addEventListener('input',()=>{$('prev-ci-date').textContent=$('ci-date').value||'—';});
+
+// 항목 렌더
+function renderItems(){
+  let invHtml='', detailHtml='';
+  items.forEach((item,i)=>{
+    const remaining=Math.max(0,item.remaining);
+    const defaultAmt=remaining>0?remaining.toFixed(2):'';
+    const defaultHs=item.stage==='FAB'?'8542.31-1000':'9906.85.01';
+    const tagCls=item.stage==='FAB'?'tag-fab':'tag-ip';
+    const poOrVendor=item.poNo||item.vendor||'';
+
+    // Invoice 미리보기 행
+    invHtml+=`<tr>
+      <td class="center">${i+1}</td>
+      <td class="center"><span class="${tagCls}">${item.stage}</span></td>
+      <td class="left" style="font-size:11px;">
+        <div style="font-weight:600;">${poOrVendor}</div>
+        <div style="color:#6b7280;">${item.project}</div>
+      </td>
+      <td class="left">${item.item}</td>
+      <td class="amt">${fmtUsd(item.unitPrice)}</td>
+      <td class="center">${item.qty}</td>
+      <td class="amt">
+        <input type="text" class="amt-input inv-amt" data-idx="${i}" value="${defaultAmt}" onchange="recalc()">
+      </td>
+      <td class="center">
+        <input type="text" class="hs-input" data-idx="${i}" value="${defaultHs}" style="text-align:center;">
+      </td>
+    </tr>`;
+
+    // 상세 항목 행
+    detailHtml+=`<tr>
+      <td class="center">${i+1}</td>
+      <td class="center"><span class="${tagCls}">${item.stage}</span></td>
+      <td class="left" style="font-weight:600;">${item.project}</td>
+      <td class="center">${item.customer}</td>
+      <td class="center">${item.vendor}</td>
+      <td class="center">${item.alCode}</td>
+      <td class="left" style="font-size:11px;">${item.item}</td>
+      <td class="amt">${fmtUsd(item.invoiceAmt)}</td>
+      <td class="amt">${fmtUsd(item.customsTargetAmt)}</td>
+      <td class="amt" style="color:#15803d;">${fmtUsd(item.cleared)}</td>
+      <td style="background:#fffef0;">
+        <input type="number" class="amt-input detail-amt" data-idx="${i}" value="${defaultAmt}" step="0.01" onchange="syncAmt(this)">
+      </td>
+      <td class="center">
+        <input type="text" class="detail-hs" data-idx="${i}" value="${defaultHs}" style="text-align:center;width:100%;padding:4px;border:1px solid #d1d5db;border-radius:4px;font-size:11px;" onchange="syncHs(this)">
+      </td>
+      <td><input type="text" class="detail-remark" data-idx="${i}" placeholder="" style="width:100%;padding:4px;border:1px solid #d1d5db;border-radius:4px;font-size:11px;"></td>
+    </tr>`;
+  });
+
+  $('inv-items').innerHTML=invHtml;
+  $('detail-items').innerHTML=detailHtml;
+  $('item-count').textContent=items.length;
+  recalc();
+}
+
+function syncAmt(el){
+  const idx=el.dataset.idx;
+  const val=el.value;
+  const invInputs=document.querySelectorAll('.inv-amt[data-idx="'+idx+'"]');
+  invInputs.forEach(inp=>inp.value=val);
+  recalc();
+}
+
+function syncHs(el){
+  const idx=el.dataset.idx;
+  const val=el.value;
+  const hsInputs=document.querySelectorAll('.hs-input[data-idx="'+idx+'"]');
+  hsInputs.forEach(inp=>inp.value=val);
+}
+
+function recalc(){
+  let total=0;
+  document.querySelectorAll('.inv-amt').forEach(inp=>{
+    total+=parseFloat(inp.value)||0;
+  });
+  $('inv-total').textContent=fmtUsd(total);
+  $('detail-total').textContent=fmtUsd(total);
+  $('bottom-summary').textContent=`${items.length}건 · 통관 합계 ${fmtUsd(total)}`;
+}
+
+function registerInvoice(){
+  const ciNo=($('ci-no').value||'').trim();
+  const ciDate=($('ci-date').value||'').trim();
+  if(!ciNo){alert('CI No. (통관 Invoice No.)를 입력해주세요.');return;}
+  if(!ciDate){alert('통관일을 입력해주세요.');return;}
+
+  const results=[];
+  let hasError=false;
+  items.forEach((item,i)=>{
+    const amtEl=document.querySelector('.detail-amt[data-idx="'+i+'"]');
+    const hsEl=document.querySelector('.detail-hs[data-idx="'+i+'"]');
+    const remarkEl=document.querySelector('.detail-remark[data-idx="'+i+'"]');
+    const amt=parseFloat(amtEl?amtEl.value:0);
+    if(!amt||amt<=0){hasError=true;return;}
+    results.push({
+      itemId:item.id,
+      ciNo:ciNo,
+      date:ciDate,
+      amt:amt,
+      hsCode:(hsEl?hsEl.value:'').trim(),
+      remark:(remarkEl?remarkEl.value:'').trim()
+    });
+  });
+
+  if(hasError){alert('모든 항목의 통관금액을 입력해주세요.');return;}
+
+  localStorage.setItem('customsInvoiceResult',JSON.stringify(results));
+  alert(`통관 등록 완료!\n\nCI No.: ${ciNo}\n통관일: ${ciDate}\n${results.length}건 · ${fmtUsd(results.reduce((s,r)=>s+r.amt,0))}`);
+  window.location.href='수출입통관관리.html';
+}
+
+renderItems();
+</script>
+</body>
+</html>

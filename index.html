@@ -144,6 +144,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .past-notice { background: #f8f9fb; border: 1px dashed #d1d5db; border-radius: 6px; padding: 9px 16px; margin: 10px 20px 0; font-size: 12px; color: #6b7280; }
 .empty-row td { color: #9ca3af; padding: 40px; text-align: center; }
 
+/* 체크박스 */
+.chk-col { width: 28px; text-align: center; }
+.chk-col input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; accent-color: #2563eb; }
+
+/* 하단 액션 바 */
+.action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff; padding: 12px 28px; display: flex; align-items: center; gap: 16px; z-index: 999; box-shadow: 0 -4px 20px rgba(0,0,0,.25); transform: translateY(100%); transition: transform .25s ease; }
+.action-bar.show { transform: translateY(0); }
+.action-bar .sel-count { font-size: 14px; font-weight: 700; }
+.action-bar .sel-amt { font-size: 13px; color: #94a3b8; margin-left: 8px; }
+.btn-action { background: #16a34a; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-left: auto; }
+.btn-action:hover { background: #15803d; }
+.btn-desel { background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.btn-desel:hover { color: #fff; border-color: #94a3b8; }
+
 .type-divider td { background: #f1f5f9; padding: 4px 14px; border-left: 4px solid #94a3b8; font-size: 11px; font-weight: 700; color: #475569; }
 
 .ip-alert { display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; animation: pulse-alert 2s ease-in-out infinite; }
@@ -236,8 +250,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
         <table class="tbl">
           <thead>
             <tr>
+              <th class="chk-col" rowspan="2" style="background:#f0fdf4;"><input type="checkbox" onclick="toggleSelectAll(this)"></th>
               <th colspan="11" class="th-group" style="background:#eef2ff;color:#3730a3;">과제 · 청구 정보 (청구처리목록 연동)</th>
-              <th colspan="5" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
+              <th colspan="4" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
             </tr>
             <tr>
               <th style="width:22px;background:#eef2ff;"></th>
@@ -255,7 +270,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
               <th style="min-width:105px;background:#f0fdf4;">통관완료($)</th>
               <th style="min-width:100px;background:#f0fdf4;">잔여($)</th>
               <th style="min-width:68px;background:#f0fdf4;">상태</th>
-              <th style="min-width:70px;background:#f0fdf4;"></th>
             </tr>
           </thead>
           <tbody id="unified-body"></tbody>
@@ -321,6 +335,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
       <div class="sum-strip" id="hist-sum"></div>
     </div>
   </div><!-- /tab-2 -->
+
+  <!-- 하단 액션 바 -->
+  <div class="action-bar" id="action-bar">
+    <span class="sel-count" id="sel-count">0건 선택</span>
+    <span class="sel-amt" id="sel-amt"></span>
+    <button class="btn-desel" onclick="clearSelection()">선택 해제</button>
+    <button class="btn-action" onclick="goToInvoicePage()">선택 항목 통관 등록 →</button>
+  </div>
 
 </div>
 
@@ -501,6 +523,7 @@ let IP_ITEMS = [
 const YEARS=[2024,2025,2026], CURRENT_YEAR=2026;
 let selYear=2026, selQtr=0, activeTab=1;
 let projCollapsed=new Set(), itemExpanded=new Set(), ciCollapsed=new Set();
+let selectedItems=new Set();
 
 const $=id=>document.getElementById(id);
 const fmtUsd=n=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -627,7 +650,10 @@ function renderItemRow(item,isPast){
   const holdAmt=Math.max(0,(item.invoiceAmt||0)-item.customsTargetAmt);
   const vendorDisplay=item.vendor+((!isFab&&item.country)?` <span style="background:#f0fdf4;color:#15803d;padding:0 4px;border-radius:3px;font-size:10px;">${item.country}</span>`:'');
 
+  const isChecked=selectedItems.has(item.id);
+  const canSelect=st.code!=='complete'&&!isPast;
   let html=`<tr class="po-row" onclick="toggleItem('${item.id}')" style="${!isFab?'background:rgba(254,252,232,.2);':''}">
+    <td class="chk-col" onclick="event.stopPropagation();">${canSelect?`<input type="checkbox" ${isChecked?'checked':''} onchange="toggleSelect('${item.id}')">`:''}</td>
     <td style="background:#f8f9fb;"><span class="expand-icon${isOpen?' open':''}">▶</span></td>
     <td><span class="${tagCls}">${tagLabel}</span></td>
     <td style="font-weight:600;font-size:11px;">${vendorDisplay}</td>
@@ -651,9 +677,6 @@ function renderItemRow(item,isPast){
       ${st.remaining>0.01?fmtUsd(st.remaining):st.code==='hold'?`<span style="color:#7c3aed;">${fmtUsd(st.holdAmt)} Hold</span>`:'완료 ✓'}
     </td>
     <td style="background:rgba(240,253,244,.5);"><span class="badge ${st.cls}">${st.label}</span></td>
-    <td style="background:rgba(240,253,244,.5);">
-      ${st.code!=='complete'&&!isPast?`<button class="btn btn-add btn-sm" onclick="event.stopPropagation();openForm('${item.id}')">+ 통관</button>`:''}
-    </td>
   </tr>`;
 
   html+=`<tr class="detail-row${isOpen?'':' hidden'}" id="detail-${item.id}"><td colspan="100">
@@ -670,17 +693,6 @@ function renderItemRow(item,isPast){
             ${c.remark?`<span class="chip-remark">${c.remark}</span>`:''}
             ${isPast?'':`<span class="chip-del" onclick="event.stopPropagation();removeClearance('${item.id}',${ci})">×</span>`}
           </div>`).join('')}</div>`}
-      ${isPast?'':`<div class="add-form" id="af-${item.id}" style="display:none;" onclick="event.stopPropagation()">
-        <div class="fg" style="flex:1.5;"><label>CI No. *</label><input type="text" id="fc-ci-${item.id}" placeholder="CI-${selYear}-XXXX"></div>
-        <div class="fg"><label>통관일 *</label><input type="date" id="fc-date-${item.id}" value="${selYear}-06-16"></div>
-        <div class="fg"><label>통관금액($) *</label><input type="number" id="fc-amt-${item.id}" placeholder="${st.remaining>0.01?Number(st.remaining).toFixed(2):''}" step="0.01"></div>
-        <div class="fg"><label>HS Code</label><input type="text" id="fc-hs-${item.id}" placeholder="${isFab?'8542.31-1000':'9906.85.01'}"></div>
-        <div class="fg" style="flex:2;"><label>비고</label><input type="text" id="fc-rm-${item.id}"></div>
-        <div style="display:flex;gap:6px;">
-          <button class="btn btn-add btn-sm" onclick="addClearance('${item.id}')">등록</button>
-          <button class="btn btn-ghost btn-sm" onclick="$('af-${item.id}').style.display='none'">취소</button>
-        </div>
-      </div>`}
     </div>
   </td></tr>`;
   return html;
@@ -843,22 +855,55 @@ function toggleAllCi(expand){
   renderTab2();
 }
 
-function openForm(id){
-  const el=$('af-'+id);
-  if(el){el.style.display=el.style.display==='none'?'flex':'none';}
-  else{itemExpanded.add(id);renderTab1();setTimeout(()=>{const e=$('af-'+id);if(e)e.style.display='flex';},50);}
-}
-
 function findItem(id){return FAB_ITEMS.find(i=>i.id===id)||IP_ITEMS.find(i=>i.id===id);}
-
-function addClearance(itemId){
-  const item=findItem(itemId);if(!item)return;
-  const ciNo=($('fc-ci-'+itemId).value||'').trim(),date=($('fc-date-'+itemId).value||'').trim();
-  const amt=parseFloat($('fc-amt-'+itemId).value||0),hsCode=($('fc-hs-'+itemId).value||'').trim(),remark=($('fc-rm-'+itemId).value||'').trim();
-  if(!ciNo){alert('CI No. 입력');return;}if(!date){alert('통관일 입력');return;}if(!amt||amt<=0){alert('금액 입력');return;}
-  item.clearances.push({ciNo,date,amt,hsCode,remark});renderTab1();
-}
 function removeClearance(itemId,idx){if(!confirm('삭제?'))return;const item=findItem(itemId);if(item){item.clearances.splice(idx,1);renderTab1();}}
+
+// ─── 선택 (체크박스) ─────────────────────────────────────────────────────────
+function toggleSelect(id){
+  if(selectedItems.has(id))selectedItems.delete(id);else selectedItems.add(id);
+  renderTab1();updateActionBar();
+}
+function toggleSelectAll(el){
+  const isPast=selYear<CURRENT_YEAR;
+  const allItems=[...FAB_ITEMS.filter(i=>inPeriod(i.invoiceDate)),...IP_ITEMS.filter(i=>inPeriod(i.invoiceDate))];
+  if(el.checked){allItems.forEach(i=>{if(getStatus(i).code!=='complete'&&!isPast)selectedItems.add(i.id);});}
+  else{selectedItems.clear();}
+  renderTab1();updateActionBar();
+}
+function clearSelection(){selectedItems.clear();renderTab1();updateActionBar();}
+
+function updateActionBar(){
+  const bar=$('action-bar');
+  const cnt=selectedItems.size;
+  if(cnt===0){bar.classList.remove('show');return;}
+  bar.classList.add('show');
+  let totalAmt=0;
+  selectedItems.forEach(id=>{const item=findItem(id);if(item)totalAmt+=item.customsTargetAmt-getStatus(item).cleared;});
+  $('sel-count').textContent=`${cnt}건 선택`;
+  $('sel-amt').textContent=`통관대상 잔여 합계: ${fmtUsd(totalAmt)}`;
+}
+
+function goToInvoicePage(){
+  if(selectedItems.size===0){alert('통관할 항목을 선택해주세요.');return;}
+  const items=[];
+  selectedItems.forEach(id=>{
+    const item=findItem(id);
+    if(item){
+      const st=getStatus(item);
+      items.push({
+        id:item.id, stage:item.stage, vendor:item.vendor, customer:item.customer,
+        project:item.project, alCode:item.alCode, tmCode:item.tmCode||'',
+        invoiceNo:item.invoiceNo||'', invoiceDate:item.invoiceDate||'',
+        poNo:item.poNo||'', item:item.item, category:item.category||'',
+        unitPrice:item.unitPrice, qty:item.qty, invoiceAmt:item.invoiceAmt,
+        customsTargetAmt:item.customsTargetAmt, cleared:st.cleared,
+        remaining:st.remaining
+      });
+    }
+  });
+  localStorage.setItem('customsInvoiceItems',JSON.stringify(items));
+  window.location.href='통관등록.html';
+}
 
 function resetFilter1(){['f1-project','f1-customer','f1-alcode'].forEach(id=>$(id).value='');$('f1-status').value='';$('f1-source').value='';renderTab1();}
 function resetFilter2(){['f2-ci','f2-project','f2-customer'].forEach(id=>$(id).value='');$('f2-source').value='';renderTab2();}
@@ -867,6 +912,23 @@ $('f1-status').addEventListener('change',renderTab1);
 $('f1-source').addEventListener('change',renderTab1);
 ['f2-ci','f2-project','f2-customer'].forEach(id=>$(id).addEventListener('input',renderTab2));
 $('f2-source').addEventListener('change',renderTab2);
+
+// ─── 통관등록 결과 수신 ──────────────────────────────────────────────────────
+(function(){
+  const raw=localStorage.getItem('customsInvoiceResult');
+  if(!raw)return;
+  try{
+    const results=JSON.parse(raw);
+    localStorage.removeItem('customsInvoiceResult');
+    localStorage.removeItem('customsInvoiceItems');
+    let cnt=0;
+    results.forEach(r=>{
+      const item=findItem(r.itemId);
+      if(item){item.clearances.push({ciNo:r.ciNo,date:r.date,amt:r.amt,hsCode:r.hsCode,remark:r.remark});cnt++;}
+    });
+    if(cnt>0) setTimeout(()=>alert(`통관 ${cnt}건이 등록되었습니다.`),200);
+  }catch(e){}
+})();
 
 renderPeriodBar();
 renderTab1();
