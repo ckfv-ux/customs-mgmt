@@ -23,11 +23,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .btn-sm { padding: 4px 10px; font-size: 12px; }
 .btn-add { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
 .btn-add:hover { background: #dcfce7; }
-.btn-toggle-on  { background: #2563eb; color: #fff; border: 1px solid #2563eb; }
 
 .form-input, .form-select { width: 100%; padding: 7px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; color: #111827; background: #fff; outline: none; transition: border-color .15s; }
 .form-input:focus, .form-select:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.1); }
-.form-label { display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px; }
 
 .section-header { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #f0f0f0; }
 .section-number { width: 22px; height: 22px; border-radius: 50%; background: #2563eb; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -35,7 +33,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .section-title { font-size: 14px; font-weight: 700; color: #111827; }
 .section-subtitle { font-size: 12px; color: #9ca3af; }
 
-/* ── 기간 바 ── */
+/* 기간 바 */
 .period-bar { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
 .period-label { font-size: 12px; font-weight: 600; color: #6b7280; flex-shrink: 0; }
 .year-tabs { display: flex; gap: 4px; }
@@ -48,7 +46,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .qtr-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
 .past-badge { background: #f3f4f6; color: #6b7280; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
 
-/* ── 메인 탭 ── */
+/* 메인 탭 */
 .main-tabs { display: flex; gap: 0; background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 16px; overflow: hidden; }
 .main-tab { flex: 1; padding: 14px 20px; cursor: pointer; border-bottom: 3px solid transparent; text-align: center; transition: all .15s; }
 .main-tab .tab-icon { font-size: 18px; margin-bottom: 4px; }
@@ -60,7 +58,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .main-tab.active2 { border-bottom-color: #15803d; background: #f0fdf4; }
 .main-tab.active2 .tab-title { color: #15803d; }
 
-/* ── KPI ── */
+/* KPI */
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
 .kpi-card { background: #fff; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); border-left: 4px solid #e5e7eb; cursor: pointer; }
 .kpi-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
@@ -74,12 +72,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .kpi-sub { font-size: 11px; color: #9ca3af; margin-top: 3px; }
 .kpi-sub strong { color: #374151; }
 
-/* ── 검색 ── */
+/* 검색 */
 .filter-row { display: flex; gap: 10px; padding: 12px 20px; align-items: flex-end; flex-wrap: wrap; }
 .filter-row .fg { flex: 1; min-width: 140px; }
 .filter-row .fg label { display: block; font-size: 11px; font-weight: 600; color: #6b7280; margin-bottom: 3px; }
 
-/* ── 테이블 공통 ── */
+/* 테이블 공통 */
 .tbl-wrap { overflow-x: auto; }
 .tbl { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
 .tbl th { background: #f8f9fb; color: #6b7280; font-weight: 600; padding: 6px 10px; text-align: center; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #f0f0f0; }
@@ -89,12 +87,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .po-row:hover td { background: #f0f5ff !important; }
 .po-row td:first-child { border-left: 4px solid #c7d2fe; }
 
-/* ── 과제 그룹 헤더 ── */
+/* 과제 그룹 헤더 */
 .proj-header-row { cursor: pointer; }
 .proj-inner { display: flex; align-items: center; padding: 9px 14px; gap: 12px; border-left: 4px solid transparent; }
 .proj-sep td { height: 5px; background: #e9ecf0; padding: 0; border: none; }
 
-/* ── 상세 펼침 ── */
+/* 상세 펼침 */
 .detail-row > td { padding: 0; }
 .detail-inner { padding: 12px 20px 12px 28px; background: #f8faff; border-left: 4px solid #2563eb; }
 .chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
@@ -114,25 +112,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .add-form input { width: 100%; padding: 5px 8px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 12px; outline: none; }
 .add-form input:focus { border-color: #2563eb; }
 
-/* ── 탭2 이력 테이블 ── */
+/* 탭2 이력 테이블 */
 .ci-group-header td { background: #f0f5ff; border-left: 4px solid #2563eb; cursor: pointer; padding: 8px 14px; }
 .ci-inner { display: flex; align-items: center; gap: 12px; }
 .ci-no { font-weight: 700; font-family: monospace; font-size: 13px; color: #1d4ed8; }
-.ci-item-row td:first-child { border-left: 4px solid #c7d2fe; padding-left: 28px; }
 .ci-sep td { height: 5px; background: #e9ecf0; padding: 0; border: none; }
 
-/* ── 배지 / 태그 ── */
+/* 배지 / 태그 */
 .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
 .b-complete { background: #dcfce7; color: #15803d; }
 .b-hold     { background: #ede9fe; color: #6d28d9; }
 .b-progress { background: #fef3c7; color: #92400e; }
 .b-pending  { background: #fee2e2; color: #b91c1c; }
-.b-blue     { background: #dbeafe; color: #1d4ed8; }
 
-.src-tsmc { background: #dbeafe; color: #1d4ed8; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
-.src-ip   { background: #fef9c3; color: #854d0e; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
-.src-ms   { background: #fce7f3; color: #9d174d; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
-.src-roy  { background: #ede9fe; color: #5b21b6; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.src-tsmc { background: #dbeafe; color: #1d4ed8; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.src-ip   { background: #fef9c3; color: #854d0e; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.src-ms   { background: #fce7f3; color: #9d174d; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.src-roy  { background: #ede9fe; color: #5b21b6; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
 
 .bar-wrap { width: 100%; height: 3px; background: #e5e7eb; border-radius: 2px; margin-top: 3px; }
 .bar-fill { height: 3px; border-radius: 2px; }
@@ -149,6 +145,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .past-notice { background: #f8f9fb; border: 1px dashed #d1d5db; border-radius: 6px; padding: 9px 16px; margin: 10px 20px 0; font-size: 12px; color: #6b7280; }
 .empty-row td { color: #9ca3af; padding: 40px; text-align: center; }
 
+/* 구분 서브헤더 (TSMC / IP 영역 구분선) */
+.type-divider td { background: #f1f5f9; padding: 4px 14px; border-left: 4px solid #94a3b8; font-size: 11px; font-weight: 700; color: #475569; }
+
+/* IP 경고 태그 */
+.ip-alert { display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; animation: pulse-alert 2s ease-in-out infinite; }
+.tsmc-alert { display: inline-flex; align-items: center; gap: 4px; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+@keyframes pulse-alert { 0%,100%{opacity:1;} 50%{opacity:.6;} }
+
 @media (max-width: 1400px) {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -162,7 +166,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     <button class="btn btn-ghost btn-sm">↓ Excel 내보내기</button>
   </div>
 
-  <!-- 기간 선택 (항상 표시) -->
+  <!-- 기간 선택 -->
   <div class="period-bar">
     <span class="period-label">조회 기간</span>
     <div class="year-tabs" id="year-tabs"></div>
@@ -176,7 +180,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     <div class="main-tab active" id="tab-btn-1" onclick="switchTab(1)">
       <div class="tab-icon">📋</div>
       <div class="tab-title">통관 대상 현황</div>
-      <div class="tab-desc">통관이 필요한 과제 · 잔여금액 확인 · 통관 등록</div>
+      <div class="tab-desc">과제별 TSMC + IP 통합 · 잔여금액 확인 · 통관 등록</div>
     </div>
     <div class="main-tab" id="tab-btn-2" onclick="switchTab(2)">
       <div class="tab-icon">✅</div>
@@ -185,7 +189,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     </div>
   </div>
 
-  <!-- ══════════ TAB 1: 통관 대상 현황 ══════════ -->
+  <!-- ══════════ TAB 1: 통관 대상 현황 (통합 뷰) ══════════ -->
   <div id="tab-1">
 
     <!-- KPI -->
@@ -201,6 +205,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
         <div class="fg"><label>과제명</label><input id="f1-project" type="text" class="form-input" placeholder="과제명"></div>
         <div class="fg"><label>고객사</label><input id="f1-customer" type="text" class="form-input" placeholder="고객사"></div>
         <div class="fg"><label>AL Code</label><input id="f1-alcode" type="text" class="form-input" placeholder="CC..."></div>
+        <div class="fg"><label>구분</label>
+          <select id="f1-source" class="form-select">
+            <option value="">전체 (TSMC + IP)</option>
+            <option value="TSMC">TSMC만</option>
+            <option value="IP">IP 업체만</option>
+          </select>
+        </div>
         <div class="fg">
           <label>통관 상태</label>
           <select id="f1-status" class="form-select">
@@ -218,84 +229,43 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
       </div>
     </div>
 
-    <!-- TSMC 통관 대상 -->
+    <!-- 통합 테이블 -->
     <div class="card">
       <div class="section-header">
         <div class="section-number">2</div>
-        <span class="section-title">TSMC 통관 대상</span>
-        <span id="tsmc-count" class="section-subtitle" style="margin-left:4px;"></span>
+        <span class="section-title">과제별 통관 대상 (통합)</span>
+        <span id="unified-count" class="section-subtitle" style="margin-left:4px;"></span>
         <div style="margin-left:auto;display:flex;gap:6px;">
-          <button class="btn btn-ghost btn-sm" onclick="toggleAll('tsmc',true)">모두 펼치기</button>
-          <button class="btn btn-ghost btn-sm" onclick="toggleAll('tsmc',false)">접기</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleAllUnified(true)">모두 펼치기</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleAllUnified(false)">접기</button>
         </div>
       </div>
-      <div id="tsmc-past-notice" class="past-notice hidden">📁 이력 조회 모드 — 통관 등록 비활성화</div>
+      <div id="unified-past-notice" class="past-notice hidden">📁 이력 조회 모드 — 통관 등록 비활성화</div>
       <div class="tbl-wrap">
         <table class="tbl">
           <thead>
             <tr>
-              <th colspan="5" class="th-group" style="background:#eef2ff;color:#3730a3;">발주 / 청구 정보</th>
-              <th colspan="3" class="th-group" style="background:#fffbeb;color:#92400e;">통관 대상</th>
-              <th colspan="4" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
+              <th colspan="6" class="th-group" style="background:#eef2ff;color:#3730a3;">과제 · 청구/IP 정보</th>
+              <th colspan="5" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
             </tr>
             <tr>
               <th style="width:22px;background:#eef2ff;"></th>
+              <th style="min-width:50px;background:#eef2ff;">구분</th>
+              <th style="min-width:100px;background:#eef2ff;">공급사/업체</th>
               <th style="min-width:64px;background:#eef2ff;">AL Code</th>
-              <th style="min-width:150px;background:#eef2ff;text-align:left;font-size:11px;">PO No.</th>
-              <th style="min-width:130px;background:#eef2ff;font-size:11px;text-align:left;">Invoice#</th>
-              <th style="min-width:78px;background:#eef2ff;">Invoice일</th>
-              <th style="min-width:165px;background:#fffbeb;text-align:left;">품목</th>
-              <th style="min-width:105px;background:#fffbeb;">청구금액 ($)</th>
-              <th style="min-width:110px;background:#fffbeb;">통관대상금액 ($)</th>
+              <th style="min-width:200px;background:#eef2ff;text-align:left;">PO No. / IP Name</th>
+              <th style="min-width:110px;background:#eef2ff;">청구/지급액 ($)</th>
+              <th style="min-width:110px;background:#f0fdf4;">통관대상 ($)</th>
               <th style="min-width:110px;background:#f0fdf4;">통관완료 ($)</th>
               <th style="min-width:110px;background:#f0fdf4;">잔여 ($)</th>
               <th style="min-width:72px;background:#f0fdf4;">상태</th>
               <th style="min-width:80px;background:#f0fdf4;"></th>
             </tr>
           </thead>
-          <tbody id="tsmc-body"></tbody>
+          <tbody id="unified-body"></tbody>
         </table>
       </div>
-      <div class="sum-strip" id="tsmc-sum"></div>
-    </div>
-
-    <!-- IP 통관 대상 -->
-    <div class="card">
-      <div class="section-header">
-        <div class="section-number g">3</div>
-        <span class="section-title">IP 업체 통관 대상</span>
-        <span id="ip-count" class="section-subtitle" style="margin-left:4px;"></span>
-        <div style="margin-left:auto;display:flex;gap:6px;">
-          <button class="btn btn-ghost btn-sm" onclick="toggleAll('ip',true)">모두 펼치기</button>
-          <button class="btn btn-ghost btn-sm" onclick="toggleAll('ip',false)">접기</button>
-        </div>
-      </div>
-      <div id="ip-past-notice" class="past-notice hidden">📁 이력 조회 모드 — 통관 등록 비활성화</div>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead>
-            <tr>
-              <th colspan="5" class="th-group" style="background:#fefce8;color:#713f12;">IP 계약 정보</th>
-              <th colspan="4" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
-            </tr>
-            <tr>
-              <th style="width:22px;background:#fefce8;"></th>
-              <th style="min-width:50px;background:#fefce8;">구분</th>
-              <th style="min-width:80px;background:#fefce8;">IP공급사</th>
-              <th style="min-width:64px;background:#fefce8;">AL Code</th>
-              <th style="min-width:190px;background:#fefce8;text-align:left;">IP Name</th>
-              <th style="min-width:55px;background:#fefce8;border-right:2px solid #e5e7eb;">소재지</th>
-              <th style="min-width:105px;background:#f0fdf4;">지급금액 ($)</th>
-              <th style="min-width:110px;background:#f0fdf4;">통관완료 ($)</th>
-              <th style="min-width:110px;background:#f0fdf4;">잔여 ($)</th>
-              <th style="min-width:72px;background:#f0fdf4;">상태</th>
-              <th style="min-width:80px;background:#f0fdf4;"></th>
-            </tr>
-          </thead>
-          <tbody id="ip-body"></tbody>
-        </table>
-      </div>
-      <div class="sum-strip" id="ip-sum"></div>
+      <div class="sum-strip" id="unified-sum"></div>
     </div>
 
   </div><!-- /tab-1 -->
@@ -365,113 +335,113 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 <script>
 // ─── 데이터 ──────────────────────────────────────────────────────────────────
 let TSMC_ITEMS = [
-  { id:'t01', vendor:'TSMC', customer:'Anapass', project:'ANA38413_N1C', alCode:'CC21536',
+  { id:'t01', source:'TSMC', vendor:'TSMC', customer:'Anapass', project:'ANA38413_N1C', alCode:'CC21536',
     invoiceDate:'2026-05-06', poNo:'AL-RTO-20260324-22', item:'6" MASK FOR WAFER', invoiceNos:['0K642605068Q'],
     invoicedAmt:218046, customsTargetAmt:218046, targetNote:'',
     clearances:[{ciNo:'CI-2026-0507-01',date:'2026-05-20',amt:218046,hsCode:'8442.50-9000',remark:'Mask set 전량'}] },
 
-  { id:'t02', vendor:'TSMC', customer:'Anapass', project:'ANA38413_N1C', alCode:'CC21536',
+  { id:'t02', source:'TSMC', vendor:'TSMC', customer:'Anapass', project:'ANA38413_N1C', alCode:'CC21536',
     invoiceDate:'2026-05-06', poNo:'AL-NTO-20250903-23', item:'12" Wafer (pilot 2pcs)', invoiceNos:['0K642605068R'],
     invoicedAmt:14872.80, customsTargetAmt:14872.80, targetNote:'',
     clearances:[{ciNo:'CI-2026-0507-01',date:'2026-05-20',amt:14872.80,hsCode:'8542.31-1000',remark:'Mask 동일 CI 병합'}] },
 
-  { id:'t03a', vendor:'TSMC', customer:'D', project:'MF62', alCode:'CC21539',
+  { id:'t03a', source:'TSMC', vendor:'TSMC', customer:'D', project:'MF62', alCode:'CC21539',
     invoiceDate:'2026-05-06', poNo:'AL-MP-20260112-21', item:'8" Wafer (1차 25매)', invoiceNos:['0K642605069K'],
     invoicedAmt:15625, customsTargetAmt:15625, targetNote:'',
     clearances:[{ciNo:'CI-2026-0514-01',date:'2026-05-21',amt:15625,hsCode:'8542.31-1000',remark:''}] },
 
-  { id:'t03b', vendor:'TSMC', customer:'D', project:'MF62', alCode:'CC21539',
+  { id:'t03b', source:'TSMC', vendor:'TSMC', customer:'D', project:'MF62', alCode:'CC21539',
     invoiceDate:'2026-05-06', poNo:'AL-MP-20260211-21', item:'8" Wafer (2차 25매)', invoiceNos:['0K642605069K'],
     invoicedAmt:15625, customsTargetAmt:15625, targetNote:'',
     clearances:[] },
 
-  { id:'t04', vendor:'TSMC', customer:'F', project:'KWU_C1', alCode:'CC21540',
+  { id:'t04', source:'TSMC', vendor:'TSMC', customer:'F', project:'KWU_C1', alCode:'CC21540',
     invoiceDate:'2026-05-06', poNo:'AL-MPW-20260129-11', item:'BLOCK FEE', invoiceNos:['0K64260506VV'],
     invoicedAmt:14854, customsTargetAmt:14854, targetNote:'수입신고 대상 여부 확인 필요',
     clearances:[] },
 
-  { id:'t05', vendor:'TSMC', customer:'E', project:'Pegasus_N1B', alCode:'CC21541',
+  { id:'t05', source:'TSMC', vendor:'TSMC', customer:'E', project:'Pegasus_N1B', alCode:'CC21541',
     invoiceDate:'2026-05-08', poNo:'AL-MP-260108-31', item:'12" Wafer (25매, Contact Hold)', invoiceNos:['0K64260509GB'],
     invoicedAmt:87832.50, customsTargetAmt:52699.50,
     targetNote:'25매 중 15매 출하 / 10매 Contact Hold → Hold 해제 시 $35,133 추가 통관 필요',
     clearances:[{ciNo:'CI-2026-0522-01',date:'2026-05-22',amt:52699.50,hsCode:'8542.31-1000',remark:'출하 15매'}] },
 
-  { id:'t06', vendor:'TSMC', customer:'H', project:'TNR300', alCode:'CC21543',
+  { id:'t06', source:'TSMC', vendor:'TSMC', customer:'H', project:'TNR300', alCode:'CC21543',
     invoiceDate:'2026-05-12', poNo:'AL-MPW-20260316-22', item:'IP MERGE SERVICE', invoiceNos:['0K6426050F15'],
     invoicedAmt:3500, customsTargetAmt:3500, targetNote:'IP 서비스 수수료 — 수입신고 대상',
     clearances:[] },
 
-  { id:'t07', vendor:'TSMC', customer:'B', project:'Falcon_N2A-P', alCode:'CC21549',
+  { id:'t07', source:'TSMC', vendor:'TSMC', customer:'B', project:'Falcon_N2A-P', alCode:'CC21549',
     invoiceDate:'2026-05-18', poNo:'AL-NTO-20260409-22', item:'12" Wafer (probe card 2pcs)', invoiceNos:['0K6426050KXS'],
     invoicedAmt:1602, customsTargetAmt:1602, targetNote:'',
     clearances:[] },
 
-  { id:'t08', vendor:'TSMC', customer:'CGGD', project:'LEO_C2', alCode:'CC21552',
+  { id:'t08', source:'TSMC', vendor:'TSMC', customer:'CGGD', project:'LEO_C2', alCode:'CC21552',
     invoiceDate:'2026-05-19', poNo:'AL-MPW-20260114-23', item:'Block fee + EXTRA WAFER', invoiceNos:['0K6426050O8P'],
     invoicedAmt:45974.84, customsTargetAmt:45974.84, targetNote:'Block fee + Extra wafer 합산',
     clearances:[] },
 
-  { id:'t09', vendor:'TSMC', customer:'E', project:'Pegasus_N1C', alCode:'CC21550',
+  { id:'t09', source:'TSMC', vendor:'TSMC', customer:'E', project:'Pegasus_N1C', alCode:'CC21550',
     invoiceDate:'2026-05-21', poNo:'AL-NTO-260401-31', item:'LOT Charge (pilot)', invoiceNos:['0K6426050PX0'],
     invoicedAmt:34358.02, customsTargetAmt:34358.02, targetNote:'',
     clearances:[] },
 
-  { id:'t10', vendor:'TSMC', customer:'E', project:'Pegasus_N1C', alCode:'CC21550',
+  { id:'t10', source:'TSMC', vendor:'TSMC', customer:'E', project:'Pegasus_N1C', alCode:'CC21550',
     invoiceDate:'2026-05-21', poNo:'AL-MP-260108-32', item:'12" Wafer (PO 50매)', invoiceNos:['0K6426050PX3'],
     invoicedAmt:178948, customsTargetAmt:178948,
     targetNote:'PO 50매 — 1차 25매 통관완료 / 2차 25매 대기',
     clearances:[{ciNo:'CI-2026-0420-01',date:'2026-04-20',amt:89474,hsCode:'8542.31-1000',remark:'1차 25매'}] },
 
-  { id:'t11', vendor:'TSMC', customer:'JK', project:'VS776Q_C2', alCode:'CC21551',
+  { id:'t11', source:'TSMC', vendor:'TSMC', customer:'JK', project:'VS776Q_C2', alCode:'CC21551',
     invoiceDate:'2026-05-22', poNo:'AL-MPW-20260312-11', item:'TMUV07_C51 reorder wafer (7매)', invoiceNos:['0K6426050RKW'],
     invoicedAmt:96509, customsTargetAmt:96509, targetNote:'',
     clearances:[] },
 
-  { id:'t-2025-01', vendor:'TSMC', customer:'Anapass', project:'ANA36211_N2A', alCode:'CC20512',
+  { id:'t-2025-01', source:'TSMC', vendor:'TSMC', customer:'Anapass', project:'ANA36211_N2A', alCode:'CC20512',
     invoiceDate:'2025-11-10', poNo:'AL-MP-20251015-11', item:'12" Wafer (25매)', invoiceNos:['0K5425110ABC'],
     invoicedAmt:92500, customsTargetAmt:92500, targetNote:'',
     clearances:[{ciNo:'CI-2025-1120-01',date:'2025-11-20',amt:92500,hsCode:'8542.31-1000',remark:'전량 완료'}] },
 
-  { id:'t-2025-02', vendor:'TSMC', customer:'B', project:'Falcon_N2A', alCode:'CC20498',
+  { id:'t-2025-02', source:'TSMC', vendor:'TSMC', customer:'B', project:'Falcon_N2A', alCode:'CC20498',
     invoiceDate:'2025-08-05', poNo:'AL-NTO-20250720-21', item:'6" MASK FOR WAFER', invoiceNos:['0K5425080XYZ'],
     invoicedAmt:218046, customsTargetAmt:218046, targetNote:'',
     clearances:[{ciNo:'CI-2025-0815-01',date:'2025-08-15',amt:218046,hsCode:'8442.50-9000',remark:'Mask 전량'}] },
 ];
 
 let IP_ITEMS = [
-  { id:'ip01', category:'IP', vendor:'Synopsys', country:'USA',
+  { id:'ip01', source:'IP', category:'IP', vendor:'Synopsys', country:'USA',
     customer:'E', project:'Pegasus_N1B', alCode:'CC21541',
     ipName:'DesignWare USB IP', payDate:'2026-03-15', payAmt:28000, customsTargetAmt:28000,
     targetNote:'해외 IP 라이선스 — 수입신고 대상', clearances:[] },
 
-  { id:'ip02', category:'IP', vendor:'Cadence', country:'USA',
+  { id:'ip02', source:'IP', category:'IP', vendor:'Cadence', country:'USA',
     customer:'E', project:'Pegasus_N1C', alCode:'CC21550',
     ipName:'PCIe Gen5 PHY IP', payDate:'2026-05-10', payAmt:45000, customsTargetAmt:45000,
     targetNote:'', clearances:[] },
 
-  { id:'ip03', category:'IP', vendor:'ARM', country:'UK',
+  { id:'ip03', source:'IP', category:'IP', vendor:'ARM', country:'UK',
     customer:'Anapass', project:'ANA38413_N1C', alCode:'CC21536',
     ipName:'Cortex-M33 CPU IP', payDate:'2026-02-10', payAmt:32000, customsTargetAmt:32000,
     targetNote:'',
     clearances:[{ciNo:'CI-2026-0218-IP1',date:'2026-02-18',amt:32000,hsCode:'9906.85.01',remark:'ARM CPU IP'}] },
 
-  { id:'ip04', category:'IP', vendor:'Rambus', country:'USA',
+  { id:'ip04', source:'IP', category:'IP', vendor:'Rambus', country:'USA',
     customer:'D', project:'MF62', alCode:'CC21539',
     ipName:'LPDDR5 PHY IP', payDate:'2026-04-05', payAmt:18000, customsTargetAmt:18000,
     targetNote:'', clearances:[] },
 
-  { id:'ip05', category:'M&S', vendor:'Synopsys', country:'USA',
+  { id:'ip05', source:'IP', category:'M&S', vendor:'Synopsys', country:'USA',
     customer:'B', project:'Falcon_N2A-P', alCode:'CC21549',
     ipName:'DesignWare M&S Annual Fee', payDate:'2026-01-20', payAmt:5000, customsTargetAmt:5000,
     targetNote:'M&S 연간 유지보수료',
     clearances:[{ciNo:'CI-2026-0125-IP1',date:'2026-01-25',amt:5000,hsCode:'9906.85.01',remark:'M&S fee'}] },
 
-  { id:'ip06', category:'Royalty', vendor:'SMIC IP', country:'China',
+  { id:'ip06', source:'IP', category:'Royalty', vendor:'SMIC IP', country:'China',
     customer:'CGGD', project:'LEO_C2', alCode:'CC21552',
     ipName:'SRAM Compiler Royalty', payDate:'2026-05-30', payAmt:8200, customsTargetAmt:8200,
     targetNote:'', clearances:[] },
 
-  { id:'ip-2025-01', category:'IP', vendor:'ARM', country:'UK',
+  { id:'ip-2025-01', source:'IP', category:'IP', vendor:'ARM', country:'UK',
     customer:'B', project:'Falcon_N2A', alCode:'CC20498',
     ipName:'Cortex-A55 CPU IP', payDate:'2025-06-20', payAmt:55000, customsTargetAmt:55000,
     targetNote:'',
@@ -481,12 +451,13 @@ let IP_ITEMS = [
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
 const YEARS = [2024, 2025, 2026], CURRENT_YEAR = 2026;
 let selYear = 2026, selQtr = 0, activeTab = 1;
-let tsmcCollapsed = new Set(), ipCollapsed = new Set();
-let tsmcExpanded  = new Set(), ipExpanded  = new Set();
-let ciCollapsed   = new Set();
+let projCollapsed = new Set();
+let itemExpanded   = new Set();
+let ciCollapsed    = new Set();
 
 const $ = id => document.getElementById(id);
 const fmtUsd = n => '$' + Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const catTag = {TSMC:'src-tsmc', IP:'src-ip', 'M&S':'src-ms', Royalty:'src-roy'};
 
 function inPeriod(d) {
   if (!d) return false;
@@ -517,13 +488,18 @@ function getProjStatus(items) {
   return {code,label,cls,tInv,tTgt,tClr,tRem,tHold};
 }
 
-function groupBy(items) {
+// ─── 통합 그룹핑: 과제 기준으로 TSMC + IP 합침 ────────────────────────────────
+function groupByProject(tsmcItems, ipItems) {
   const map = new Map();
-  items.forEach(i=>{
-    const k=i.project+'@@'+i.alCode;
-    if(!map.has(k)) map.set(k,{key:k,project:i.project,customer:i.customer,alCode:i.alCode,items:[]});
-    map.get(k).items.push(i);
-  });
+  const addToMap = (item, type) => {
+    const k = item.project + '@@' + item.alCode;
+    if (!map.has(k)) map.set(k, {key:k, project:item.project, customer:item.customer, alCode:item.alCode, tsmcItems:[], ipItems:[], allItems:[]});
+    const g = map.get(k);
+    if (type==='TSMC') g.tsmcItems.push(item); else g.ipItems.push(item);
+    g.allItems.push(item);
+  };
+  tsmcItems.forEach(i => addToMap(i, 'TSMC'));
+  ipItems.forEach(i => addToMap(i, 'IP'));
   return [...map.values()];
 }
 
@@ -546,12 +522,11 @@ function switchTab(n) {
   if (n===2) renderTab2();
 }
 
-// ─── KPI (탭1) ───────────────────────────────────────────────────────────────
-function renderKPIs(tsmcGroups, ipGroups) {
-  const all = [...tsmcGroups,...ipGroups];
+// ─── KPI ─────────────────────────────────────────────────────────────────────
+function renderKPIs(groups) {
   const cnt = {pending:0,progress:0,hold:0,complete:0};
   let remTotal=0, pendAmt=0;
-  all.forEach(g=>{const ps=getProjStatus(g.items);cnt[ps.code]++;remTotal+=ps.tRem;if(ps.code==='pending')pendAmt+=ps.tTgt;});
+  groups.forEach(g=>{const ps=getProjStatus(g.allItems);cnt[ps.code]++;remTotal+=ps.tRem;if(ps.code==='pending')pendAmt+=ps.tTgt;});
   $('kpi-grid').innerHTML = [
     {cls:'kpend',label:'미통관 과제',   val:cnt.pending,  sub:`${fmtUsd(pendAmt)} 미신고`},
     {cls:'kprog',label:'부분통관 과제', val:cnt.progress, sub:`잔여 ${fmtUsd(remTotal)}`},
@@ -565,19 +540,31 @@ function renderKPIs(tsmcGroups, ipGroups) {
     </div>`).join('');
 }
 
-// ─── 과제 헤더 공통 ──────────────────────────────────────────────────────────
+// ─── 과제 헤더 ───────────────────────────────────────────────────────────────
 const pbg={pending:'#fff5f5',progress:'#fffef0',hold:'#faf5ff',complete:'#f0fdf4'};
 const pbr={pending:'#fca5a5',progress:'#fde68a',hold:'#c4b5fd',complete:'#86efac'};
 
-function projHdr(proj,ps,collapsed,fn) {
-  return `<tr class="proj-header-row" onclick="${fn}('${proj.key}')" style="background:${pbg[ps.code]};">
+function projHdr(proj, ps, collapsed) {
+  const tCnt = proj.tsmcItems.length;
+  const iCnt = proj.ipItems.length;
+  const tPend = proj.tsmcItems.filter(i=>getStatus(i).code!=='complete').length;
+  const iPend = proj.ipItems.filter(i=>getStatus(i).code!=='complete').length;
+
+  let alertTags = '';
+  if (tCnt > 0 && iCnt > 0) {
+    if (iPend > 0) alertTags += `<span class="ip-alert">⚠ IP 미통관 ${iPend}건</span>`;
+    if (tPend > 0) alertTags += `<span class="tsmc-alert">TSMC 잔여 ${tPend}건</span>`;
+  }
+
+  return `<tr class="proj-header-row" onclick="toggleProj('${proj.key}')" style="background:${pbg[ps.code]};">
     <td colspan="100" style="padding:0;border-left:4px solid ${pbr[ps.code]};">
       <div class="proj-inner">
         <span class="expand-icon${collapsed?'':' open'}">▶</span>
         <span style="font-size:14px;font-weight:700;color:#111827;">${proj.project}</span>
         <span style="font-size:12px;color:#6b7280;">${proj.customer}</span>
         <span style="background:#f3f4f6;color:#6b7280;padding:1px 6px;border-radius:3px;font-size:11px;">${proj.alCode}</span>
-        <span style="font-size:11px;color:#9ca3af;">${proj.items.length}건</span>
+        <span style="font-size:11px;color:#9ca3af;">${tCnt>0?`TSMC ${tCnt}건`:''}${tCnt>0&&iCnt>0?' · ':''}${iCnt>0?`IP ${iCnt}건`:''}</span>
+        ${alertTags}
         <div style="margin-left:auto;display:flex;align-items:center;gap:18px;">
           <div style="text-align:right;"><div style="font-size:10px;color:#9ca3af;">청구/지급합계</div><div style="font-size:13px;font-weight:700;color:#1d4ed8;">${fmtUsd(ps.tInv)}</div></div>
           <div style="text-align:right;"><div style="font-size:10px;color:#9ca3af;">통관완료</div><div style="font-size:13px;font-weight:700;color:#15803d;">${fmtUsd(ps.tClr)}</div></div>
@@ -592,192 +579,147 @@ function projHdr(proj,ps,collapsed,fn) {
   </tr>`;
 }
 
-// ─── TAB1: TSMC 렌더 ─────────────────────────────────────────────────────────
-function renderTsmc(statusFilter) {
-  const isPast = selYear < CURRENT_YEAR;
-  $('tsmc-past-notice').classList.toggle('hidden',!isPast);
+// ─── 행 렌더 (TSMC / IP 공통) ────────────────────────────────────────────────
+function renderItemRow(item, isPast) {
+  const st = getStatus(item);
+  const isOpen = itemExpanded.has(item.id);
+  const isTsmc = item.source === 'TSMC';
+  const pct = item.customsTargetAmt>0 ? Math.min(100,(st.cleared/item.customsTargetAmt)*100) : 0;
+  const barC = {complete:'#16a34a',hold:'#7c3aed',progress:'#f59e0b',pending:'#e5e7eb'}[st.code];
+  const srcCls = isTsmc ? 'src-tsmc' : (catTag[item.category] || 'src-ip');
+  const srcLabel = isTsmc ? 'TSMC' : (item.category || 'IP');
+  const invAmt = item.invoicedAmt || item.payAmt || 0;
+  const desc = isTsmc ? item.poNo : item.ipName;
+  const vendorDisplay = isTsmc ? 'TSMC' : `${item.vendor}`;
+  const holdAmt = Math.max(0, invAmt - item.customsTargetAmt);
+  const prefix = isTsmc ? 'tsmc' : 'ip';
 
-  let items = TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate));
-  const f1p = $('f1-project').value.trim().toLowerCase();
-  const f1c = $('f1-customer').value.trim().toLowerCase();
-  const f1a = $('f1-alcode').value.trim().toLowerCase();
-  if(f1p) items=items.filter(i=>i.project.toLowerCase().includes(f1p));
-  if(f1c) items=items.filter(i=>i.customer.toLowerCase().includes(f1c));
-  if(f1a) items=items.filter(i=>i.alCode.toLowerCase().includes(f1a));
+  let html = `<tr class="po-row" onclick="toggleItem('${item.id}')" style="${!isTsmc?'background:rgba(254,252,232,.25);':''}">
+    <td style="background:#f8f9fb;"><span class="expand-icon${isOpen?' open':''}">▶</span></td>
+    <td><span class="${srcCls}">${srcLabel}</span></td>
+    <td style="font-weight:600;font-size:12px;">${vendorDisplay}${!isTsmc&&item.country?` <span style="background:#f0fdf4;color:#15803d;padding:0 4px;border-radius:3px;font-size:10px;">${item.country}</span>`:''}</td>
+    <td><span style="background:#f3f4f6;color:#6b7280;padding:1px 5px;border-radius:3px;font-size:11px;">${item.alCode}</span></td>
+    <td style="text-align:left;font-size:12px;">${desc}</td>
+    <td style="text-align:right;font-weight:700;color:#1d4ed8;">
+      <div>${fmtUsd(invAmt)}</div>
+      ${holdAmt>0.01?`<div style="margin-top:2px;"><span style="background:#ede9fe;color:#6d28d9;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:600;">Hold ${fmtUsd(holdAmt)}</span></div>`:''}
+    </td>
+    <td style="text-align:right;font-weight:600;">${fmtUsd(item.customsTargetAmt)}</td>
+    <td style="background:rgba(240,253,244,.5);">
+      <div style="text-align:right;font-weight:700;color:#15803d;">${st.cleared>0.01?fmtUsd(st.cleared):'<span style="color:#d1d5db;">—</span>'}</div>
+      ${st.cleared>0.01?`<div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${barC};"></div></div>`:''}
+    </td>
+    <td style="text-align:right;font-weight:700;color:${st.remaining<0.01?(st.code==='hold'?'#7c3aed':'#15803d'):(st.remaining>=item.customsTargetAmt-0.01?'#b91c1c':'#d97706')};background:rgba(240,253,244,.5);">
+      ${st.remaining>0.01?fmtUsd(st.remaining):st.code==='hold'?`<span style="color:#7c3aed;">${fmtUsd(st.holdAmt)} Hold</span>`:'완료 ✓'}
+    </td>
+    <td style="background:rgba(240,253,244,.5);"><span class="badge ${st.cls}">${st.label}</span></td>
+    <td style="background:rgba(240,253,244,.5);">
+      ${st.code!=='complete'&&!isPast?`<button class="btn btn-add btn-sm" onclick="event.stopPropagation();openForm('${item.id}')">+ 통관</button>`:''}
+    </td>
+  </tr>`;
 
-  let groups = groupBy(items);
-  if(statusFilter==='all') { /* show all */ }
-  else if(statusFilter && statusFilter!=='') groups=groups.filter(g=>getProjStatus(g.items).code===statusFilter);
-  else groups=groups.filter(g=>getProjStatus(g.items).code!=='complete'); // default: hide complete
+  // 상세 펼침
+  html += `<tr class="detail-row${isOpen?'':' hidden'}" id="detail-${item.id}"><td colspan="100">
+    <div class="detail-inner">
+      ${item.targetNote?`<div class="target-note">📌 ${item.targetNote}</div>`:''}
+      ${isTsmc?`<div style="font-size:11px;color:#6b7280;margin-bottom:6px;">Invoice: <span style="font-family:monospace;">${(item.invoiceNos||[]).join(', ')}</span> · ${item.invoiceDate}</div>`:''}
+      <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:8px;">통관 이력 (${item.clearances.length}건)</div>
+      ${item.clearances.length===0?`<div class="no-clearance">등록된 통관 이력이 없습니다.</div>`
+        :`<div class="chips-wrap">${item.clearances.map((c,ci)=>`
+          <div class="clearance-chip">
+            <span class="chip-ci">${c.ciNo}</span><span class="chip-date">${c.date}</span>
+            <span class="chip-amt">${fmtUsd(c.amt)}</span>
+            ${c.hsCode?`<span class="chip-hs">HS ${c.hsCode}</span>`:''}
+            ${c.remark?`<span class="chip-remark">${c.remark}</span>`:''}
+            ${isPast?'':`<span class="chip-del" onclick="event.stopPropagation();removeClearance('${item.id}',${ci})">×</span>`}
+          </div>`).join('')}</div>`}
+      ${isPast?'':`<div class="add-form" id="af-${item.id}" style="display:none;" onclick="event.stopPropagation()">
+        <div class="fg" style="flex:1.5;"><label>CI No. *</label><input type="text" id="fc-ci-${item.id}" placeholder="CI-${selYear}-XXXX"></div>
+        <div class="fg"><label>통관일 *</label><input type="date" id="fc-date-${item.id}" value="${selYear}-06-16"></div>
+        <div class="fg"><label>통관금액 ($) *</label><input type="number" id="fc-amt-${item.id}" placeholder="${st.remaining>0.01?Number(st.remaining).toFixed(2):''}" step="0.01"></div>
+        <div class="fg"><label>HS Code</label><input type="text" id="fc-hs-${item.id}" placeholder="${isTsmc?'8542.31-1000':'9906.85.01'}"></div>
+        <div class="fg" style="flex:2;"><label>비고</label><input type="text" id="fc-rm-${item.id}"></div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-add btn-sm" onclick="addClearance('${item.id}')">등록</button>
+          <button class="btn btn-ghost btn-sm" onclick="$('af-${item.id}').style.display='none'">취소</button>
+        </div>
+      </div>`}
+    </div>
+  </td></tr>`;
 
-  if(!groups.length){
-    $('tsmc-body').innerHTML=`<tr class="empty-row"><td colspan="100">해당 기간 TSMC 통관 대상이 없습니다.</td></tr>`;
-    renderSum('tsmc-sum',[]); $('tsmc-count').textContent=''; return groups;
-  }
-
-  let html='', allItems=[];
-  groups.forEach((proj,gi)=>{
-    const ps=getProjStatus(proj.items);
-    const collapsed=tsmcCollapsed.has(proj.key);
-    if(gi>0) html+=`<tr class="proj-sep"><td colspan="100"></td></tr>`;
-    html+=projHdr(proj,ps,collapsed,'tsmcToggleProj');
-    if(!collapsed){
-      proj.items.forEach(item=>{
-        allItems.push(item);
-        const st=getStatus(item); const latest=item.clearances.length?item.clearances[item.clearances.length-1]:null;
-        const isOpen=tsmcExpanded.has(item.id);
-        const pct=item.customsTargetAmt>0?Math.min(100,(st.cleared/item.customsTargetAmt)*100):0;
-        const barC={complete:'#16a34a',hold:'#7c3aed',progress:'#f59e0b',pending:'#e5e7eb'}[st.code];
-        html+=`<tr class="po-row" onclick="tsmcToggleItem('${item.id}')">
-          <td style="background:#f8f9fb;"><span class="expand-icon${isOpen?' open':''}">▶</span></td>
-          <td><span style="background:#f3f4f6;color:#6b7280;padding:1px 5px;border-radius:3px;font-size:11px;">${item.alCode}</span></td>
-          <td style="text-align:left;font-family:monospace;font-size:11px;color:#374151;">${item.poNo}</td>
-          <td style="text-align:left;font-family:monospace;font-size:10px;color:#9ca3af;">${item.invoiceNos.join(', ')}</td>
-          <td style="font-size:11px;color:#6b7280;">${item.invoiceDate}</td>
-          <td style="text-align:left;font-size:12px;background:#fffbeb;">${item.item}</td>
-          <td style="text-align:right;font-weight:700;color:#1d4ed8;background:#fffbeb;">${fmtUsd(item.invoicedAmt)}</td>
-          <td style="background:#fffbeb;">
-            <div style="text-align:right;font-weight:600;">${fmtUsd(item.customsTargetAmt)}</div>
-            ${item.invoicedAmt-item.customsTargetAmt>0.01?`<div style="text-align:right;margin-top:2px;"><span style="background:#ede9fe;color:#6d28d9;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:600;">Hold ${fmtUsd(item.invoicedAmt-item.customsTargetAmt)}</span></div>`:''}
-          </td>
-          <td style="background:rgba(240,253,244,.5);">
-            <div style="text-align:right;font-weight:700;color:#15803d;">${st.cleared>0.01?fmtUsd(st.cleared):'<span style="color:#d1d5db;">—</span>'}</div>
-            ${st.cleared>0.01?`<div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${barC};"></div></div>`:''}
-          </td>
-          <td style="text-align:right;font-weight:700;color:${st.remaining<0.01?(st.code==='hold'?'#7c3aed':'#15803d'):(st.remaining>=item.customsTargetAmt-0.01?'#b91c1c':'#d97706')};background:rgba(240,253,244,.5);">
-            ${st.remaining>0.01?fmtUsd(st.remaining):st.code==='hold'?`<span style="color:#7c3aed;">${fmtUsd(st.holdAmt)} Hold</span>`:'완료 ✓'}
-          </td>
-          <td style="background:rgba(240,253,244,.5);"><span class="badge ${st.cls}">${st.label}</span></td>
-          <td style="background:rgba(240,253,244,.5);">
-            ${st.code!=='complete'&&!isPast?`<button class="btn btn-add btn-sm" onclick="event.stopPropagation();tsmcOpenForm('${item.id}')">+ 통관</button>`:''}
-          </td>
-        </tr>
-        <tr class="detail-row${isOpen?'':' hidden'}" id="td-${item.id}"><td colspan="100">
-          <div class="detail-inner">
-            ${item.targetNote?`<div class="target-note">📌 ${item.targetNote}</div>`:''}
-            <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:8px;">통관 이력 (${item.clearances.length}건)</div>
-            ${item.clearances.length===0?`<div class="no-clearance">등록된 통관 이력이 없습니다.</div>`
-              :`<div class="chips-wrap">${item.clearances.map((c,ci)=>`
-                <div class="clearance-chip">
-                  <span class="chip-ci">${c.ciNo}</span><span class="chip-date">${c.date}</span>
-                  <span class="chip-amt">${fmtUsd(c.amt)}</span>
-                  ${c.hsCode?`<span class="chip-hs">HS ${c.hsCode}</span>`:''}
-                  ${c.remark?`<span class="chip-remark">${c.remark}</span>`:''}
-                  ${isPast?'':`<span class="chip-del" onclick="event.stopPropagation();removeTsmc('${item.id}',${ci})">×</span>`}
-                </div>`).join('')}</div>`}
-            ${isPast?'':`<div class="add-form" id="af-tsmc-${item.id}" style="display:none;" onclick="event.stopPropagation()">
-              <div class="fg" style="flex:1.5;"><label>CI No. *</label><input type="text" id="tc-ci-${item.id}" placeholder="CI-${selYear}-XXXX"></div>
-              <div class="fg"><label>통관일 *</label><input type="date" id="tc-date-${item.id}" value="${selYear}-06-16"></div>
-              <div class="fg"><label>통관금액 ($) *</label><input type="number" id="tc-amt-${item.id}" placeholder="${st.remaining>0.01?Number(st.remaining).toFixed(2):''}" step="0.01"></div>
-              <div class="fg"><label>HS Code</label><input type="text" id="tc-hs-${item.id}" placeholder="8542.31-1000"></div>
-              <div class="fg" style="flex:2;"><label>비고</label><input type="text" id="tc-rm-${item.id}"></div>
-              <div style="display:flex;gap:6px;">
-                <button class="btn btn-add btn-sm" onclick="addTsmc('${item.id}')">등록</button>
-                <button class="btn btn-ghost btn-sm" onclick="$('af-tsmc-${item.id}').style.display='none'">취소</button>
-              </div>
-            </div>`}
-          </div>
-        </td></tr>`;
-      });
-    }
-  });
-  $('tsmc-body').innerHTML=html;
-  $('tsmc-count').textContent=`— ${groups.length}과제 / ${allItems.length}건`;
-  renderSum('tsmc-sum',allItems);
-  return groups;
+  return html;
 }
 
-// ─── TAB1: IP 렌더 ──────────────────────────────────────────────────────────
-function renderIp(statusFilter) {
+// ─── TAB1: 통합 렌더 ─────────────────────────────────────────────────────────
+function renderTab1() {
   const isPast = selYear < CURRENT_YEAR;
-  $('ip-past-notice').classList.toggle('hidden',!isPast);
-  const catTag={IP:'src-ip','M&S':'src-ms',Royalty:'src-roy'};
+  $('unified-past-notice').classList.toggle('hidden',!isPast);
 
-  let items = IP_ITEMS.filter(i=>inPeriod(i.payDate));
+  const sf = $('f1-status').value;
+  const srcFilter = $('f1-source').value;
   const f1p = $('f1-project').value.trim().toLowerCase();
   const f1c = $('f1-customer').value.trim().toLowerCase();
   const f1a = $('f1-alcode').value.trim().toLowerCase();
-  if(f1p) items=items.filter(i=>i.project.toLowerCase().includes(f1p));
-  if(f1c) items=items.filter(i=>i.customer.toLowerCase().includes(f1c));
-  if(f1a) items=items.filter(i=>i.alCode.toLowerCase().includes(f1a));
 
-  let groups = groupBy(items);
-  if(statusFilter==='all') { /* all */ }
-  else if(statusFilter && statusFilter!=='') groups=groups.filter(g=>getProjStatus(g.items).code===statusFilter);
-  else groups=groups.filter(g=>getProjStatus(g.items).code!=='complete');
+  let tItems = TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate));
+  let iItems = IP_ITEMS.filter(i=>inPeriod(i.payDate));
+
+  if(f1p) { tItems=tItems.filter(i=>i.project.toLowerCase().includes(f1p)); iItems=iItems.filter(i=>i.project.toLowerCase().includes(f1p)); }
+  if(f1c) { tItems=tItems.filter(i=>i.customer.toLowerCase().includes(f1c)); iItems=iItems.filter(i=>i.customer.toLowerCase().includes(f1c)); }
+  if(f1a) { tItems=tItems.filter(i=>i.alCode.toLowerCase().includes(f1a)); iItems=iItems.filter(i=>i.alCode.toLowerCase().includes(f1a)); }
+  if(srcFilter==='TSMC') iItems=[];
+  if(srcFilter==='IP') tItems=[];
+
+  let groups = groupByProject(tItems, iItems);
+
+  if(sf==='all') { /* show all */ }
+  else if(sf && sf!=='') groups=groups.filter(g=>getProjStatus(g.allItems).code===sf);
+  else groups=groups.filter(g=>getProjStatus(g.allItems).code!=='complete');
 
   if(!groups.length){
-    $('ip-body').innerHTML=`<tr class="empty-row"><td colspan="100">해당 기간 IP 통관 대상이 없습니다.</td></tr>`;
-    renderSum('ip-sum',[],true); $('ip-count').textContent=''; return groups;
+    $('unified-body').innerHTML=`<tr class="empty-row"><td colspan="100">해당 기간 통관 대상이 없습니다.</td></tr>`;
+    renderSum('unified-sum',[]); $('unified-count').textContent='';
+    renderKPIs(groupByProject(TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate)), IP_ITEMS.filter(i=>inPeriod(i.payDate))));
+    return;
   }
 
   let html='', allItems=[];
   groups.forEach((proj,gi)=>{
-    const ps=getProjStatus(proj.items);
-    const collapsed=ipCollapsed.has(proj.key);
+    const ps = getProjStatus(proj.allItems);
+    const collapsed = projCollapsed.has(proj.key);
     if(gi>0) html+=`<tr class="proj-sep"><td colspan="100"></td></tr>`;
-    html+=projHdr(proj,ps,collapsed,'ipToggleProj');
+    html += projHdr(proj, ps, collapsed);
+
     if(!collapsed){
-      proj.items.forEach(item=>{
-        allItems.push(item);
-        const st=getStatus(item); const latest=item.clearances.length?item.clearances[item.clearances.length-1]:null;
-        const isOpen=ipExpanded.has(item.id);
-        const pct=item.customsTargetAmt>0?Math.min(100,(st.cleared/item.customsTargetAmt)*100):0;
-        const barC={complete:'#16a34a',hold:'#7c3aed',progress:'#f59e0b',pending:'#e5e7eb'}[st.code];
-        const tagCls=catTag[item.category]||'src-ip';
-        html+=`<tr class="po-row" onclick="ipToggleItem('${item.id}')">
-          <td style="background:#f8f9fb;"><span class="expand-icon${isOpen?' open':''}">▶</span></td>
-          <td><span class="${tagCls}">${item.category}</span></td>
-          <td style="font-weight:600;font-size:12px;">${item.vendor}</td>
-          <td><span style="background:#f3f4f6;color:#6b7280;padding:1px 5px;border-radius:3px;font-size:11px;">${item.alCode}</span></td>
-          <td style="text-align:left;font-size:12px;background:#fefce8;">${item.ipName}</td>
-          <td style="background:#fefce8;border-right:2px solid #e5e7eb;"><span style="background:#f0fdf4;color:#15803d;padding:1px 5px;border-radius:3px;font-size:11px;font-weight:600;">${item.country}</span></td>
-          <td style="text-align:right;font-weight:700;color:#1d4ed8;">
-            <div>${fmtUsd(item.payAmt)}</div>
-            ${st.cleared>0.01?`<div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${barC};"></div></div>`:''}
-          </td>
-          <td style="text-align:right;font-weight:700;color:#15803d;background:rgba(240,253,244,.5);">${st.cleared>0.01?fmtUsd(st.cleared):'<span style="color:#d1d5db;">—</span>'}</td>
-          <td style="text-align:right;font-weight:700;color:${st.remaining<0.01?'#15803d':(st.remaining>=item.customsTargetAmt-0.01?'#b91c1c':'#d97706')};background:rgba(240,253,244,.5);">
-            ${st.remaining>0.01?fmtUsd(st.remaining):'완료 ✓'}
-          </td>
-          <td style="background:rgba(240,253,244,.5);"><span class="badge ${st.cls}">${st.label}</span></td>
-          <td style="background:rgba(240,253,244,.5);">
-            ${st.code!=='complete'&&!isPast?`<button class="btn btn-add btn-sm" onclick="event.stopPropagation();ipOpenForm('${item.id}')">+ 통관</button>`:''}
-          </td>
-        </tr>
-        <tr class="detail-row${isOpen?'':' hidden'}" id="id-${item.id}"><td colspan="100">
-          <div class="detail-inner">
-            ${item.targetNote?`<div class="target-note">📌 ${item.targetNote}</div>`:''}
-            <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:8px;">통관 이력 (${item.clearances.length}건)</div>
-            ${item.clearances.length===0?`<div class="no-clearance">등록된 통관 이력이 없습니다.</div>`
-              :`<div class="chips-wrap">${item.clearances.map((c,ci)=>`
-                <div class="clearance-chip">
-                  <span class="chip-ci">${c.ciNo}</span><span class="chip-date">${c.date}</span>
-                  <span class="chip-amt">${fmtUsd(c.amt)}</span>
-                  ${c.hsCode?`<span class="chip-hs">HS ${c.hsCode}</span>`:''}
-                  ${c.remark?`<span class="chip-remark">${c.remark}</span>`:''}
-                  ${isPast?'':`<span class="chip-del" onclick="event.stopPropagation();removeIp('${item.id}',${ci})">×</span>`}
-                </div>`).join('')}</div>`}
-            ${isPast?'':`<div class="add-form" id="af-ip-${item.id}" style="display:none;" onclick="event.stopPropagation()">
-              <div class="fg" style="flex:1.5;"><label>CI No. *</label><input type="text" id="ic-ci-${item.id}" placeholder="CI-${selYear}-XXXX-IP"></div>
-              <div class="fg"><label>통관일 *</label><input type="date" id="ic-date-${item.id}" value="${selYear}-06-16"></div>
-              <div class="fg"><label>통관금액 ($) *</label><input type="number" id="ic-amt-${item.id}" placeholder="${st.remaining>0.01?Number(st.remaining).toFixed(2):''}" step="0.01"></div>
-              <div class="fg"><label>HS Code</label><input type="text" id="ic-hs-${item.id}" placeholder="9906.85.01"></div>
-              <div class="fg" style="flex:2;"><label>비고</label><input type="text" id="ic-rm-${item.id}"></div>
-              <div style="display:flex;gap:6px;">
-                <button class="btn btn-add btn-sm" onclick="addIp('${item.id}')">등록</button>
-                <button class="btn btn-ghost btn-sm" onclick="$('af-ip-${item.id}').style.display='none'">취소</button>
-              </div>
-            </div>`}
-          </div>
-        </td></tr>`;
-      });
+      // TSMC 행
+      if(proj.tsmcItems.length > 0) {
+        if(proj.ipItems.length > 0) {
+          html+=`<tr class="type-divider"><td colspan="100"><span class="src-tsmc" style="font-size:11px;">TSMC</span> ${proj.tsmcItems.length}건</td></tr>`;
+        }
+        proj.tsmcItems.forEach(item=>{
+          allItems.push(item);
+          html += renderItemRow(item, isPast);
+        });
+      }
+      // IP 행
+      if(proj.ipItems.length > 0) {
+        if(proj.tsmcItems.length > 0) {
+          html+=`<tr class="type-divider"><td colspan="100"><span class="src-ip" style="font-size:11px;">IP</span> ${proj.ipItems.length}건</td></tr>`;
+        }
+        proj.ipItems.forEach(item=>{
+          allItems.push(item);
+          html += renderItemRow(item, isPast);
+        });
+      }
     }
   });
-  $('ip-body').innerHTML=html;
-  $('ip-count').textContent=`— ${groups.length}과제 / ${allItems.length}건`;
-  renderSum('ip-sum',allItems,true);
-  return groups;
+
+  $('unified-body').innerHTML = html;
+  $('unified-count').textContent = `— ${groups.length}과제 / ${allItems.length}건`;
+  renderSum('unified-sum', allItems);
+
+  const allGroups = groupByProject(TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate)), IP_ITEMS.filter(i=>inPeriod(i.payDate)));
+  renderKPIs(allGroups);
 }
 
 // ─── TAB2: 통관 이력 렌더 ────────────────────────────────────────────────────
@@ -787,7 +729,6 @@ function renderTab2() {
   const f2cu  = $('f2-customer').value.trim().toLowerCase();
   const f2src = $('f2-source').value;
 
-  // 모든 clearance 레코드 수집
   const records = [];
   TSMC_ITEMS.forEach(item=>{
     item.clearances.forEach(c=>{
@@ -806,7 +747,6 @@ function renderTab2() {
     });
   });
 
-  // 필터
   let filtered = records;
   if(f2ci)  filtered=filtered.filter(r=>r.ciNo.toLowerCase().includes(f2ci));
   if(f2pj)  filtered=filtered.filter(r=>r.project.toLowerCase().includes(f2pj));
@@ -814,7 +754,6 @@ function renderTab2() {
   if(f2src==='TSMC') filtered=filtered.filter(r=>r.source==='TSMC');
   if(f2src==='IP')   filtered=filtered.filter(r=>r.source==='IP');
 
-  // CI 기준 그룹 (날짜 최신순)
   const ciMap = new Map();
   filtered.forEach(r=>{
     if(!ciMap.has(r.ciNo)) ciMap.set(r.ciNo,{ciNo:r.ciNo,date:r.date,records:[]});
@@ -833,15 +772,20 @@ function renderTab2() {
     const ciTotal=cig.records.reduce((s,r)=>s+r.amt,0);
     const hsCodes=[...new Set(cig.records.map(r=>r.hsCode).filter(Boolean))].join(', ');
     const projs=[...new Set(cig.records.map(r=>r.project))];
+    const sources=[...new Set(cig.records.map(r=>r.source))];
     const isCollapsed=ciCollapsed.has(cig.ciNo);
     totalAmt+=ciTotal; totalCnt+=cig.records.length;
     if(gi>0) html+=`<tr class="ci-sep"><td colspan="100"></td></tr>`;
+
+    const srcTags = sources.map(s => s==='TSMC'?'<span class="src-tsmc">TSMC</span>':'<span class="src-ip">IP</span>').join(' ');
+
     html+=`<tr class="ci-group-header" onclick="toggleCi('${cig.ciNo}')">
       <td colspan="100" style="padding:0;">
         <div class="ci-inner">
           <span class="expand-icon${isCollapsed?'':' open'}">▶</span>
           <span class="ci-no">${cig.ciNo}</span>
           <span style="font-size:12px;color:#374151;font-weight:600;">${cig.date}</span>
+          ${srcTags}
           <span style="font-size:12px;color:#6b7280;">${cig.records.length}건</span>
           <span style="font-size:13px;font-weight:700;color:#15803d;">${fmtUsd(ciTotal)}</span>
           ${hsCodes?`<span style="font-size:11px;color:#9ca3af;">HS ${hsCodes}</span>`:''}
@@ -855,7 +799,7 @@ function renderTab2() {
       cig.records.forEach(r=>{
         const srcTag = r.source==='TSMC'
           ? `<span class="src-tsmc">TSMC</span>`
-          : `<span class="${{IP:'src-ip','M&S':'src-ms',Royalty:'src-roy'}[r.category]||'src-ip'}">${r.category||'IP'}</span>`;
+          : `<span class="${catTag[r.category]||'src-ip'}">${r.category||'IP'}</span>`;
         html+=`<tr style="background:#fff;">
           <td style="background:#f8f9fb;border-left:4px solid #c7d2fe;"></td>
           <td style="text-align:left;padding-left:20px;">${srcTag}</td>
@@ -871,7 +815,6 @@ function renderTab2() {
     }
   });
 
-  // 탭2 서브 헤더 행 (item rows용) 보이도록 thead 오버라이드
   tbody.innerHTML = html;
   $('hist-count').textContent=`— CI ${ciGroups.length}건 / 항목 ${totalCnt}건`;
   $('hist-sum').innerHTML=`
@@ -883,11 +826,11 @@ function renderTab2() {
   `;
 }
 
-function renderSum(id, items, isIp=false) {
+function renderSum(id, items) {
   let tInv=0,tTgt=0,tClr=0,tRem=0,tHold=0;
   items.forEach(i=>{const s=getStatus(i);tInv+=(i.invoicedAmt||i.payAmt||0);tTgt+=i.customsTargetAmt;tClr+=s.cleared;tRem+=s.remaining;tHold+=s.holdAmt;});
   $(id).innerHTML=`
-    <div class="sum-label">${isIp?'지급합계':'청구합계'} <span class="sum-value" style="color:#1d4ed8;">${fmtUsd(tInv)}</span></div>
+    <div class="sum-label">청구/지급합계 <span class="sum-value" style="color:#1d4ed8;">${fmtUsd(tInv)}</span></div>
     <div class="sum-divider"></div>
     <div class="sum-label">통관대상 <span class="sum-value">${fmtUsd(tTgt)}</span></div>
     <div class="sum-divider"></div>
@@ -898,23 +841,25 @@ function renderSum(id, items, isIp=false) {
   `;
 }
 
-// ─── 탭1 전체 렌더 ───────────────────────────────────────────────────────────
-function renderTab1() {
-  const sf = $('f1-status').value;
-  const tg = renderTsmc(sf);
-  const ig = renderIp(sf);
-  renderKPIs(groupBy(TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate))),
-             groupBy(IP_ITEMS.filter(i=>inPeriod(i.payDate))));
-}
-
 function renderAll(){renderPeriodBar();renderTab1();if(activeTab===2)renderTab2();}
 
 // ─── 토글 ─────────────────────────────────────────────────────────────────────
-function tsmcToggleProj(k){tsmcCollapsed.has(k)?tsmcCollapsed.delete(k):tsmcCollapsed.add(k);renderTsmc($('f1-status').value);}
-function tsmcToggleItem(id){tsmcExpanded.has(id)?tsmcExpanded.delete(id):tsmcExpanded.add(id);renderTsmc($('f1-status').value);}
-function ipToggleProj(k){ipCollapsed.has(k)?ipCollapsed.delete(k):ipCollapsed.add(k);renderIp($('f1-status').value);}
-function ipToggleItem(id){ipExpanded.has(id)?ipExpanded.delete(id):ipExpanded.add(id);renderIp($('f1-status').value);}
+function toggleProj(k){projCollapsed.has(k)?projCollapsed.delete(k):projCollapsed.add(k);renderTab1();}
+function toggleItem(id){itemExpanded.has(id)?itemExpanded.delete(id):itemExpanded.add(id);renderTab1();}
 function toggleCi(ciNo){ciCollapsed.has(ciNo)?ciCollapsed.delete(ciNo):ciCollapsed.add(ciNo);renderTab2();}
+
+function toggleAllUnified(expand){
+  if(expand) projCollapsed.clear();
+  else {
+    const groups = groupByProject(
+      TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate)),
+      IP_ITEMS.filter(i=>inPeriod(i.payDate))
+    );
+    groups.forEach(g=>projCollapsed.add(g.key));
+  }
+  renderTab1();
+}
+
 function toggleAllCi(expand){
   if(expand) ciCollapsed.clear();
   else {
@@ -923,46 +868,40 @@ function toggleAllCi(expand){
   }
   renderTab2();
 }
-function toggleAll(type,expand){
-  if(type==='tsmc'){const g=groupBy(TSMC_ITEMS.filter(i=>inPeriod(i.invoiceDate)));expand?tsmcCollapsed.clear():g.forEach(gr=>tsmcCollapsed.add(gr.key));renderTsmc($('f1-status').value);}
-  else{const g=groupBy(IP_ITEMS.filter(i=>inPeriod(i.payDate)));expand?ipCollapsed.clear():g.forEach(gr=>ipCollapsed.add(gr.key));renderIp($('f1-status').value);}
-}
 
 // ─── 통관 등록 폼 열기 ────────────────────────────────────────────────────────
-function tsmcOpenForm(id){
-  const el=$('af-tsmc-'+id);
+function openForm(id){
+  const el=$('af-'+id);
   if(el){el.style.display=el.style.display==='none'?'flex':'none';}
-  else{tsmcExpanded.add(id);renderTsmc($('f1-status').value);setTimeout(()=>{const e=$('af-tsmc-'+id);if(e)e.style.display='flex';},50);}
-}
-function ipOpenForm(id){
-  const el=$('af-ip-'+id);
-  if(el){el.style.display=el.style.display==='none'?'flex':'none';}
-  else{ipExpanded.add(id);renderIp($('f1-status').value);setTimeout(()=>{const e=$('af-ip-'+id);if(e)e.style.display='flex';},50);}
+  else{itemExpanded.add(id);renderTab1();setTimeout(()=>{const e=$('af-'+id);if(e)e.style.display='flex';},50);}
 }
 
-// ─── CRUD ────────────────────────────────────────────────────────────────────
-function addTsmc(itemId){
-  const item=TSMC_ITEMS.find(i=>i.id===itemId);if(!item)return;
-  const ciNo=($('tc-ci-'+itemId).value||'').trim(),date=($('tc-date-'+itemId).value||'').trim();
-  const amt=parseFloat($('tc-amt-'+itemId).value||0),hsCode=($('tc-hs-'+itemId).value||'').trim(),remark=($('tc-rm-'+itemId).value||'').trim();
-  if(!ciNo){alert('CI No. 입력');return;}if(!date){alert('통관일 입력');return;}if(!amt||amt<=0){alert('금액 입력');return;}
-  item.clearances.push({ciNo,date,amt,hsCode,remark});renderTab1();
+// ─── CRUD (통합) ────────────────────────────────────────────────────────────
+function findItem(id) {
+  return TSMC_ITEMS.find(i=>i.id===id) || IP_ITEMS.find(i=>i.id===id);
 }
-function removeTsmc(itemId,idx){if(!confirm('삭제?'))return;const i=TSMC_ITEMS.find(i=>i.id===itemId);if(i){i.clearances.splice(idx,1);renderTsmc($('f1-status').value);}}
-function addIp(itemId){
-  const item=IP_ITEMS.find(i=>i.id===itemId);if(!item)return;
-  const ciNo=($('ic-ci-'+itemId).value||'').trim(),date=($('ic-date-'+itemId).value||'').trim();
-  const amt=parseFloat($('ic-amt-'+itemId).value||0),hsCode=($('ic-hs-'+itemId).value||'').trim(),remark=($('ic-rm-'+itemId).value||'').trim();
-  if(!ciNo){alert('CI No. 입력');return;}if(!date){alert('통관일 입력');return;}if(!amt||amt<=0){alert('금액 입력');return;}
-  item.clearances.push({ciNo,date,amt,hsCode,remark});renderTab1();
+
+function addClearance(itemId){
+  const item = findItem(itemId); if(!item) return;
+  const ciNo=($('fc-ci-'+itemId).value||'').trim(), date=($('fc-date-'+itemId).value||'').trim();
+  const amt=parseFloat($('fc-amt-'+itemId).value||0), hsCode=($('fc-hs-'+itemId).value||'').trim(), remark=($('fc-rm-'+itemId).value||'').trim();
+  if(!ciNo){alert('CI No. 입력');return;} if(!date){alert('통관일 입력');return;} if(!amt||amt<=0){alert('금액 입력');return;}
+  item.clearances.push({ciNo,date,amt,hsCode,remark});
+  renderTab1();
 }
-function removeIp(itemId,idx){if(!confirm('삭제?'))return;const i=IP_ITEMS.find(i=>i.id===itemId);if(i){i.clearances.splice(idx,1);renderIp($('f1-status').value);}}
+
+function removeClearance(itemId, idx){
+  if(!confirm('삭제?')) return;
+  const item = findItem(itemId);
+  if(item){item.clearances.splice(idx,1);renderTab1();}
+}
 
 // ─── 검색 초기화 ─────────────────────────────────────────────────────────────
-function resetFilter1(){['f1-project','f1-customer','f1-alcode'].forEach(id=>$(id).value='');$('f1-status').value='';renderTab1();}
+function resetFilter1(){['f1-project','f1-customer','f1-alcode'].forEach(id=>$(id).value='');$('f1-status').value='';$('f1-source').value='';renderTab1();}
 function resetFilter2(){['f2-ci','f2-project','f2-customer'].forEach(id=>$(id).value='');$('f2-source').value='';renderTab2();}
 ['f1-project','f1-customer','f1-alcode'].forEach(id=>$(id).addEventListener('input',renderTab1));
 $('f1-status').addEventListener('change',renderTab1);
+$('f1-source').addEventListener('change',renderTab1);
 ['f2-ci','f2-project','f2-customer'].forEach(id=>$(id).addEventListener('input',renderTab2));
 $('f2-source').addEventListener('change',renderTab2);
 
