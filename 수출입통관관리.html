@@ -98,7 +98,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .decl-chip .dc-del { color: #d1d5db; cursor: pointer; font-size: 14px; }
 .decl-chip .dc-del:hover { color: #b91c1c; }
 
-@media (max-width: 1400px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+/* 체크박스 */
+.chk-col { width: 28px; text-align: center; }
+.chk-col input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; accent-color: #2563eb; }
+
+/* 하단 액션 바 */
+.action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: #fff; padding: 12px 28px; display: flex; align-items: center; gap: 16px; z-index: 999; box-shadow: 0 -4px 20px rgba(0,0,0,.25); transform: translateY(100%); transition: transform .25s ease; }
+.action-bar.show { transform: translateY(0); }
+.action-bar .sel-count { font-size: 14px; font-weight: 700; }
+.action-bar .sel-amt { font-size: 13px; color: #94a3b8; margin-left: 8px; }
+.btn-desel { background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.btn-desel:hover { color: #fff; border-color: #94a3b8; }
+.btn-action { background: #16a34a; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-left: auto; }
+.btn-action:hover { background: #15803d; }
 </style>
 </head>
 <body>
@@ -131,6 +143,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     </div>
   </div>
 
+  <!-- 하단 액션 바 -->
+  <div class="action-bar" id="action-bar">
+    <span class="sel-count" id="sel-count">0건 선택</span>
+    <span class="sel-amt" id="sel-amt"></span>
+    <button class="btn-desel" onclick="clearSelection()">선택 해제</button>
+    <button class="btn-action" onclick="goToInvoicePage()">통관 Invoice 등록 →</button>
+  </div>
+
   <!-- 통관 현황 테이블 -->
   <div class="card">
     <div class="section-header">
@@ -146,6 +166,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
       <table class="tbl">
         <thead>
           <tr>
+            <th class="chk-col" rowspan="2" style="background:#f0fdf4;"><input type="checkbox" onclick="toggleSelectAll(this)"></th>
             <th colspan="9" class="th-group" style="background:#eef2ff;color:#3730a3;">매입청구 정보 (Invoice 라인)</th>
             <th colspan="2" class="th-group" style="background:#f0fdf4;color:#15803d;">수입신고</th>
           </tr>
@@ -253,6 +274,7 @@ let ipDeclared = {
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
 let activeFilter = '';
 let tmCollapsed = new Set();
+let selectedRows = new Set();
 
 const $=id=>document.getElementById(id);
 const fmtUsd=n=>'$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -270,13 +292,14 @@ function buildGroups(){
   const all=[...CLAIM_DATA,...IP_DATA];
   const map=new Map();
   all.forEach(inv=>{
-    inv.details.forEach(d=>{
+    inv.details.forEach((d,di)=>{
       if(!inPeriod(inv.invoiceDate)) return;
       const tm=inv.tmCode;
       if(!map.has(tm)) map.set(tm,{tmCode:tm,project:inv.project,customer:inv.customer,alCode:inv.alCode,fabItems:[],ipItems:[],allRows:[]});
       const g=map.get(tm);
       const isFab=inv.vendor==='TSMC';
-      const row={stage:isFab?'FAB':'IP',vendor:inv.vendor,invoiceNo:inv.invoiceNo,invoiceDate:inv.invoiceDate,item:d.item,unitPrice:d.unitPrice,qty:d.qty,amount:d.amount,poNo:d.poNo||''};
+      const rowId=inv.id+'_'+di;
+      const row={id:rowId,stage:isFab?'FAB':'IP',vendor:inv.vendor,invoiceNo:inv.invoiceNo,invoiceDate:inv.invoiceDate,item:d.item,unitPrice:d.unitPrice,qty:d.qty,amount:d.amount,poNo:d.poNo||'',tmCode:tm,project:inv.project,customer:inv.customer,alCode:inv.alCode};
       if(isFab) g.fabItems.push(row); else g.ipItems.push(row);
       g.allRows.push(row);
     });
@@ -418,7 +441,10 @@ function render(){
         const tagCls=row.stage==='FAB'?'tag-fab':'tag-ip';
         const decl=decls.length>0?decls[0]:null;
         const isDeclared=(row.stage==='FAB'&&decls.length>0)||(row.stage==='IP'&&ipDeclared[g.tmCode]===true);
+        const canSelect=!isDeclared;
+        const isChecked=selectedRows.has(row.id);
         html+=`<tr class="item-row" style="${row.stage==='IP'?'background:rgba(254,252,232,.15);':''}">
+          <td class="chk-col">${canSelect?`<input type="checkbox" ${isChecked?'checked':''} onchange="toggleSelect('${row.id}')">`:''}</td>
           <td></td>
           <td><span class="${tagCls}">${row.stage}</span></td>
           <td style="font-weight:600;font-size:11px;">${row.vendor}</td>
@@ -481,6 +507,54 @@ function resetFilters(){
   activeFilter='';render();
 }
 ['f-tm','f-project','f-customer','f-al','f-from','f-to'].forEach(id=>$(id).addEventListener('input',()=>{activeFilter='';render();}));
+
+// ─── 체크박스 선택 ───────────────────────────────────────────────────────────
+function toggleSelect(id){
+  if(selectedRows.has(id)) selectedRows.delete(id); else selectedRows.add(id);
+  render(); updateActionBar();
+}
+
+function toggleSelectAll(el){
+  const groups=buildGroups();
+  if(el.checked){
+    groups.forEach(g=>{
+      const decls=declarations[g.tmCode]||[];
+      g.allRows.forEach(row=>{
+        const isDeclared=(row.stage==='FAB'&&decls.length>0)||(row.stage==='IP'&&ipDeclared[g.tmCode]===true);
+        if(!isDeclared) selectedRows.add(row.id);
+      });
+    });
+  } else { selectedRows.clear(); }
+  render(); updateActionBar();
+}
+
+function clearSelection(){ selectedRows.clear(); render(); updateActionBar(); }
+
+function updateActionBar(){
+  const bar=$('action-bar');
+  if(selectedRows.size===0){ bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  let totalAmt=0;
+  const groups=buildGroups();
+  groups.forEach(g=>g.allRows.forEach(r=>{ if(selectedRows.has(r.id)) totalAmt+=r.amount; }));
+  $('sel-count').textContent=`${selectedRows.size}건 선택`;
+  $('sel-amt').textContent=`합계: ${fmtUsd(totalAmt)}`;
+}
+
+function goToInvoicePage(){
+  if(selectedRows.size===0){ alert('통관할 항목을 선택해주세요.'); return; }
+  const groups=buildGroups();
+  const items=[];
+  groups.forEach(g=>g.allRows.forEach(r=>{
+    if(selectedRows.has(r.id)){
+      items.push({id:r.id,stage:r.stage,vendor:r.vendor,invoiceNo:r.invoiceNo,invoiceDate:r.invoiceDate,
+        item:r.item,unitPrice:r.unitPrice,qty:r.qty,amount:r.amount,poNo:r.poNo,
+        tmCode:r.tmCode,project:r.project,customer:r.customer,alCode:r.alCode});
+    }
+  }));
+  localStorage.setItem('customsInvoiceItems',JSON.stringify(items));
+  window.location.href='통관등록.html';
+}
 
 render();
 </script>
