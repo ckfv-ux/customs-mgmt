@@ -59,7 +59,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 /* TM 그룹 */
 .tm-header { cursor: pointer; }
 .tm-header:hover td { background: #f0f5ff !important; }
-.tm-inner { display: flex; align-items: center; padding: 10px 14px; gap: 12px; }
+.tm-inner { display: flex; align-items: center; padding: 10px 14px; gap: 12px; flex-wrap: wrap; }
 .tm-sep td { height: 5px; background: #e9ecf0; padding: 0; border: none; }
 .item-row td:first-child { border-left: 4px solid #c7d2fe; }
 .item-row:hover td { background: #fafbff !important; }
@@ -75,6 +75,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .ip-alert { display: inline-flex; align-items: center; gap: 4px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; animation: pulse-alert 2s ease-in-out infinite; }
 @keyframes pulse-alert { 0%,100%{opacity:1;} 50%{opacity:.6;} }
 
+.bar-wrap { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; margin-top: 3px; }
+.bar-fill { height: 4px; border-radius: 2px; }
+
 .sum-strip { display: flex; align-items: center; gap: 18px; padding: 10px 20px; background: #f8f9fb; border-top: 1px solid #f0f0f0; border-radius: 0 0 8px 8px; flex-wrap: wrap; }
 .sum-label { font-size: 12px; color: #6b7280; }
 .sum-value { font-size: 13px; font-weight: 700; color: #111827; margin-left: 5px; }
@@ -85,14 +88,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .hidden { display: none !important; }
 .empty-row td { color: #9ca3af; padding: 40px; text-align: center; }
 
-/* 수입신고 인라인 폼 */
+/* 통관완료 정보 입력 폼 */
 .decl-form { background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; padding: 12px 16px; margin: 4px 14px 8px 42px; display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
 .decl-form .fg { display: flex; flex-direction: column; }
 .decl-form label { font-size: 10px; font-weight: 600; color: #15803d; margin-bottom: 3px; }
 .decl-form input { padding: 6px 8px; border: 1px solid #86efac; border-radius: 5px; font-size: 12px; outline: none; }
 .decl-form input:focus { border-color: #16a34a; }
 
-.decl-chip { display: none; }
+/* 통관 이력 표시 */
+.cl-history { padding: 4px 14px 8px 42px; }
+.cl-row { display: flex; align-items: center; gap: 12px; padding: 4px 10px; background: #f8fafc; border-radius: 4px; margin-bottom: 3px; font-size: 11px; }
+.cl-row .cl-no { font-weight: 700; color: #15803d; font-family: monospace; }
+.cl-row .cl-date { color: #6b7280; }
+.cl-row .cl-amt { font-weight: 700; color: #1d4ed8; }
+.cl-row .cl-del { color: #d1d5db; cursor: pointer; font-size: 14px; margin-left: auto; }
+.cl-row .cl-del:hover { color: #b91c1c; }
 
 /* 체크박스 */
 .chk-col { width: 28px; text-align: center; }
@@ -107,6 +117,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .btn-desel:hover { color: #fff; border-color: #94a3b8; }
 .btn-action { background: #16a34a; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-left: auto; }
 .btn-action:hover { background: #15803d; }
+
+@media (max-width: 1400px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -164,7 +176,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
           <tr>
             <th class="chk-col" rowspan="2" style="background:#f0fdf4;"><input type="checkbox" onclick="toggleSelectAll(this)"></th>
             <th colspan="9" class="th-group" style="background:#eef2ff;color:#3730a3;">매입청구 정보 (Invoice 라인)</th>
-            <th colspan="2" class="th-group" style="background:#f0fdf4;color:#15803d;">수입신고</th>
+            <th colspan="2" class="th-group" style="background:#f0fdf4;color:#15803d;">통관 현황</th>
           </tr>
           <tr>
             <th style="width:22px;"></th>
@@ -207,7 +219,7 @@ const CLAIM_DATA = [
     details:[{ item:'BLOCK FEE', unitPrice:14854, qty:1, amount:14854, poNo:'AL-MPW-20260129-11' }] },
   { id:'inv-05', vendor:'TSMC', invoiceDate:'2026-05-08', invoiceNo:'0K64260509GB',
     customer:'the-aio', project:'Pegasus_N1B', tmCode:'TMCODE_41', alCode:'CC21541',
-    details:[{ item:'12" Wafer (25매)', unitPrice:3513.30, qty:25, amount:87832.50, poNo:'AL-MP-260108-31' }] },
+    details:[{ item:'12" Wafer (6매)', unitPrice:5096.76, qty:6, amount:30580.56, poNo:'AL-NTO-20260422-11' }] },
   { id:'inv-06', vendor:'TSMC', invoiceDate:'2026-05-12', invoiceNo:'0K6426050F15',
     customer:'Telechips', project:'TNR300', tmCode:'TMCODE_43', alCode:'CC21543',
     details:[{ item:'IP MERGE SERVICE', unitPrice:3500, qty:1, amount:3500, poNo:'AL-MPW-20260316-22' }] },
@@ -252,19 +264,18 @@ const IP_DATA = [
     details:[{ item:'SRAM Compiler Royalty', unitPrice:8200, qty:1, amount:8200, poNo:'' }] },
 ];
 
-// 수입신고 상태: declarations[tmCode] = [{declNo, declDate}]
-// 'partial' 시뮬레이션: TMCODE_50은 FAB만 신고, IP는 아직
-let declarations = {
-  'TMCODE_36': [{declNo:'12345-26-0012345', declDate:'2026-05-25'}],
-  'TMCODE_39': [{declNo:'12345-26-0012400', declDate:'2026-05-28'}],
-  'TMCODE_50': [{declNo:'12345-26-0012500', declDate:'2026-06-01'}],
-};
-
-// partial 판단: IP 항목이 별도 신고 필요한데 아직 안 된 경우
-let ipDeclared = {
-  'TMCODE_36': true,
-  'TMCODE_39': true,
-  'TMCODE_50': false, // FAB 신고됨, IP 미신고
+// ─── 통관 이력: TM Code 레벨 금액 누적 ───────────────────────────────────────
+// clearances[tmCode] = [{invNo, amt, date, declNo, declDate}]
+let clearances = {
+  'TMCODE_36': [
+    {invNo:'0K642605068Q', amt:264918.80, date:'2026-05-20', declNo:'12345-26-0012345', declDate:'2026-05-25'}
+  ],
+  'TMCODE_41': [
+    {invNo:'0K64260509GB-1', amt:15290.28, date:'2026-05-22', declNo:'12345-26-0012380', declDate:'2026-05-28'}
+  ],
+  'TMCODE_39': [
+    {invNo:'0K642605069K', amt:49250, date:'2026-05-28', declNo:'12345-26-0012400', declDate:'2026-06-01'}
+  ],
 };
 
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
@@ -303,43 +314,51 @@ function buildGroups(){
   return[...map.values()];
 }
 
+function tmCleared(tm){
+  return (clearances[tm]||[]).reduce((s,c)=>s+c.amt,0);
+}
+
+function tmTotal(g){
+  return g.allRows.reduce((s,r)=>s+r.amount,0);
+}
+
 function tmStatus(g){
-  const decls=declarations[g.tmCode]||[];
-  const hasIp=g.ipItems.length>0;
-  const ipDone=ipDeclared[g.tmCode]===true;
-  if(decls.length===0) return 'pending';
-  if(hasIp && !ipDone) return 'partial';
+  const total=tmTotal(g);
+  const cleared=tmCleared(g.tmCode);
+  if(cleared<0.01) return 'pending';
+  if(total-cleared>0.01) return 'partial';
   return 'done';
+}
+
+function tmRemaining(g){
+  return Math.max(0, tmTotal(g) - tmCleared(g.tmCode));
 }
 
 // ─── 요약 메뉴 ───────────────────────────────────────────────────────────────
 function renderSummary(groups){
   let pending=0, partial=0, ipOnly=0, done=0;
-  let pendAmt=0, ipAmt=0;
+  let pendAmt=0, partRemain=0, ipAmt=0;
 
   groups.forEach(g=>{
     const st=tmStatus(g);
-    const amt=g.allRows.reduce((s,r)=>s+r.amount,0);
-    if(st==='pending'){pending++;pendAmt+=amt;}
-    else if(st==='partial'){partial++;}
+    if(st==='pending'){pending++;pendAmt+=tmTotal(g);}
+    else if(st==='partial'){partial++;partRemain+=tmRemaining(g);}
     else{done++;}
   });
 
-  // IP 잔여: TSMC 아닌 IP 업체 항목만 (미신고 + 부분신고의 IP)
-  const ipRows=[];
   groups.forEach(g=>{
     const st=tmStatus(g);
-    if(st==='pending'||st==='partial'){
-      g.ipItems.forEach(r=>{ipRows.push(r);ipAmt+=r.amount;});
-      ipOnly+=g.ipItems.length;
+    if(st!=='done'){
+      g.ipItems.forEach(r=>{ipAmt+=r.amount;});
+      if(g.ipItems.length>0) ipOnly++;
     }
   });
 
   const cards=[
     {id:'pending',cls:'s-pend',label:'미통관 과제',val:pending,sub:`${fmtUsd(pendAmt)} 미신고`},
-    {id:'partial',cls:'s-part',label:'부분통관 과제',val:partial,sub:'FAB 신고, IP 잔여'},
-    {id:'ip',cls:'s-ip',label:'TSMC외 IP 잔여',val:ipOnly,sub:`${fmtUsd(ipAmt)} IP 미신고`},
-    {id:'done',cls:'s-done',label:'전체완료 과제',val:done,sub:'수입신고 완료'},
+    {id:'partial',cls:'s-part',label:'부분통관 과제',val:partial,sub:`잔여 ${fmtUsd(partRemain)}`},
+    {id:'ip',cls:'s-ip',label:'TSMC외 IP 잔여',val:ipOnly,sub:`${fmtUsd(ipAmt)} IP 포함`},
+    {id:'done',cls:'s-done',label:'전체완료 과제',val:done,sub:'통관 완료'},
   ];
 
   $('summary-grid').innerHTML=cards.map(k=>
@@ -351,17 +370,13 @@ function renderSummary(groups){
   ).join('');
 }
 
-function clickSummary(id){
-  activeFilter=activeFilter===id?'':id;
-  render();
-}
+function clickSummary(id){activeFilter=activeFilter===id?'':id;render();}
 
 // ─── 메인 렌더 ───────────────────────────────────────────────────────────────
 function render(){
   let groups=buildGroups();
   const allGroups=[...groups];
 
-  // 텍스트 필터
   const fTm=$('f-tm').value.trim().toLowerCase();
   const fPj=$('f-project').value.trim().toLowerCase();
   const fCu=$('f-customer').value.trim().toLowerCase();
@@ -371,10 +386,9 @@ function render(){
   if(fCu) groups=groups.filter(g=>g.customer.toLowerCase().includes(fCu));
   if(fAl) groups=groups.filter(g=>g.alCode.toLowerCase().includes(fAl));
 
-  // 요약 메뉴 필터
   if(activeFilter==='pending') groups=groups.filter(g=>tmStatus(g)==='pending');
   else if(activeFilter==='partial') groups=groups.filter(g=>tmStatus(g)==='partial');
-  else if(activeFilter==='ip') groups=groups.filter(g=>(tmStatus(g)==='pending'||tmStatus(g)==='partial')&&g.ipItems.length>0);
+  else if(activeFilter==='ip') groups=groups.filter(g=>tmStatus(g)!=='done'&&g.ipItems.length>0);
   else if(activeFilter==='done') groups=groups.filter(g=>tmStatus(g)==='done');
 
   renderSummary(allGroups);
@@ -384,21 +398,25 @@ function render(){
     $('main-sum').innerHTML='';$('result-count').textContent='';return;
   }
 
-  // IP 잔여 필터일 때는 IP 항목만 표시
-  const ipOnlyMode = activeFilter==='ip';
-
+  const ipOnlyMode=activeFilter==='ip';
   let html='',totalAmt=0,totalRows=0;
+
   groups.forEach((g,gi)=>{
     const st=tmStatus(g);
-    const decls=declarations[g.tmCode]||[];
+    const total=tmTotal(g);
+    const cleared=tmCleared(g.tmCode);
+    const remaining=tmRemaining(g);
+    const cls=clearances[g.tmCode]||[];
     const collapsed=tmCollapsed.has(g.tmCode);
     const displayRows=ipOnlyMode?g.ipItems:g.allRows;
     const groupAmt=displayRows.reduce((s,r)=>s+r.amount,0);
     totalAmt+=groupAmt;totalRows+=displayRows.length;
 
+    const pct=total>0?Math.min(100,(cleared/total)*100):0;
     const stBg={pending:'#fff5f5',partial:'#fffef0',done:'#f0fdf4'}[st];
     const stBorder={pending:'#fca5a5',partial:'#fde68a',done:'#86efac'}[st];
-    const stBadge={pending:'<span class="badge b-pending">미신고</span>',partial:'<span class="badge b-partial">부분통관</span>',done:'<span class="badge b-done">신고완료</span>'}[st];
+    const stBadge={pending:'<span class="badge b-pending">미통관</span>',partial:'<span class="badge b-partial">부분통관</span>',done:'<span class="badge b-done">통관완료</span>'}[st];
+    const barColor={pending:'#e5e7eb',partial:'#f59e0b',done:'#16a34a'}[st];
 
     const fCnt=g.fabItems.length, iCnt=g.ipItems.length;
     let alerts='';
@@ -417,14 +435,29 @@ function render(){
           <span style="font-size:11px;color:#9ca3af;">${fCnt>0?`FAB ${fCnt}건`:''}${fCnt>0&&iCnt>0?' · ':''}${iCnt>0?`IP ${iCnt}건`:''}</span>
           ${alerts}
           <div style="margin-left:auto;display:flex;align-items:center;gap:16px;">
-            <div style="text-align:right;"><div style="font-size:10px;color:#9ca3af;">Invoice 합계</div><div style="font-size:13px;font-weight:700;color:#1d4ed8;">${fmtUsd(g.allRows.reduce((s,r)=>s+r.amount,0))}</div></div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:#9ca3af;">Invoice 합계</div>
+              <div style="font-size:13px;font-weight:700;color:#1d4ed8;">${fmtUsd(total)}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:#9ca3af;">통관완료</div>
+              <div style="font-size:13px;font-weight:700;color:#15803d;">${cleared>0.01?fmtUsd(cleared):'—'}</div>
+            </div>
+            <div style="text-align:right;min-width:90px;">
+              <div style="font-size:10px;color:#9ca3af;">잔여</div>
+              <div style="font-size:13px;font-weight:700;color:${remaining>0.01?'#d97706':'#15803d'};">${remaining>0.01?fmtUsd(remaining):'완료'}</div>
+              <div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:${pct}%;background:${barColor};"></div></div>
+            </div>
             ${stBadge}
             ${st!=='done'?`<button class="btn btn-green btn-sm" onclick="event.stopPropagation();showDeclForm('${g.tmCode}')">통관완료 정보 입력</button>`:''}
           </div>
         </div>
+        ${cls.length>0?`<div class="cl-history" onclick="event.stopPropagation();">${cls.map((c,ci)=>`<div class="cl-row"><span style="color:#9ca3af;font-size:10px;">${ci+1}차</span><span class="cl-no">${c.declNo}</span><span class="cl-date">${c.declDate}</span><span class="cl-amt">${fmtUsd(c.amt)}</span><span style="font-size:10px;color:#9ca3af;">${c.invNo}</span><span class="cl-del" onclick="removeDecl('${g.tmCode}',${ci})">×</span></div>`).join('')}</div>`:''}
         <div class="decl-form hidden" id="df-${g.tmCode}" onclick="event.stopPropagation();">
           <div class="fg"><label>수입신고번호 *</label><input type="text" id="dn-${g.tmCode}" placeholder="12345-26-0012345"></div>
           <div class="fg"><label>신고일 *</label><input type="date" id="dd-${g.tmCode}"></div>
+          <div class="fg"><label>통관금액($) *</label><input type="number" id="da-${g.tmCode}" step="0.01" placeholder="${remaining>0.01?remaining.toFixed(2):''}"></div>
+          <div class="fg"><label>통관Invoice No.</label><input type="text" id="di-${g.tmCode}" placeholder="선택"></div>
           <button class="btn btn-green btn-sm" onclick="addDecl('${g.tmCode}')">등록</button>
           <button class="btn btn-ghost btn-sm" onclick="hideDeclForm('${g.tmCode}')">취소</button>
         </div>
@@ -434,12 +467,9 @@ function render(){
     if(!collapsed){
       displayRows.forEach(row=>{
         const tagCls=row.stage==='FAB'?'tag-fab':'tag-ip';
-        const decl=decls.length>0?decls[0]:null;
-        const isDeclared=(row.stage==='FAB'&&decls.length>0)||(row.stage==='IP'&&ipDeclared[g.tmCode]===true);
-        const canSelect=!isDeclared;
-        const isChecked=selectedRows.has(row.id);
+        const latestDecl=cls.length>0?cls[cls.length-1]:null;
         html+=`<tr class="item-row" style="${row.stage==='IP'?'background:rgba(254,252,232,.15);':''}">
-          <td class="chk-col">${canSelect?`<input type="checkbox" ${isChecked?'checked':''} onchange="toggleSelect('${row.id}')">`:''}</td>
+          <td class="chk-col">${st!=='done'?`<input type="checkbox" ${selectedRows.has(row.id)?'checked':''} onchange="toggleSelect('${row.id}')">`:''}</td>
           <td></td>
           <td><span class="${tagCls}">${row.stage}</span></td>
           <td style="font-weight:600;font-size:11px;">${row.vendor}</td>
@@ -449,8 +479,8 @@ function render(){
           <td style="text-align:right;font-size:11px;color:#374151;">${fmtUsd(row.unitPrice)}</td>
           <td>${fmtQ(row.qty)}</td>
           <td style="text-align:right;font-weight:700;color:#1d4ed8;">${fmtUsd(row.amount)}</td>
-          <td style="background:rgba(240,253,244,.5);font-family:monospace;font-size:11px;color:${isDeclared?'#15803d':'#d1d5db'};">${isDeclared&&decl?decl.declNo:'—'}</td>
-          <td style="background:rgba(240,253,244,.5);font-size:11px;color:#6b7280;">${isDeclared&&decl?decl.declDate:'—'}</td>
+          <td style="background:rgba(240,253,244,.5);font-family:monospace;font-size:11px;color:${st==='done'?'#15803d':'#d1d5db'};">${st==='done'&&latestDecl?latestDecl.declNo:'—'}</td>
+          <td style="background:rgba(240,253,244,.5);font-size:11px;color:#6b7280;">${st==='done'&&latestDecl?latestDecl.declDate:'—'}</td>
         </tr>`;
       });
     }
@@ -472,26 +502,35 @@ function toggleAllTm(expand){
   render();
 }
 
-// ─── 수입신고 등록/삭제 ──────────────────────────────────────────────────────
-function showDeclForm(tm){const el=$('df-'+tm);if(el){el.classList.remove('hidden');$('dd-'+tm).value=new Date().toISOString().slice(0,10);}}
+// ─── 통관완료 정보 등록/삭제 ─────────────────────────────────────────────────
+function showDeclForm(tm){
+  const el=$('df-'+tm);
+  if(el){
+    el.classList.remove('hidden');
+    $('dd-'+tm).value=new Date().toISOString().slice(0,10);
+    const g=buildGroups().find(gg=>gg.tmCode===tm);
+    if(g) $('da-'+tm).placeholder=tmRemaining(g).toFixed(2);
+  }
+}
 function hideDeclForm(tm){const el=$('df-'+tm);if(el)el.classList.add('hidden');}
 
 function addDecl(tm){
   const no=($('dn-'+tm).value||'').trim();
   const date=($('dd-'+tm).value||'').trim();
+  const amt=parseFloat($('da-'+tm).value||0);
+  const invNo=($('di-'+tm).value||'').trim();
   if(!no){alert('수입신고번호를 입력해주세요.');return;}
   if(!date){alert('신고일을 입력해주세요.');return;}
-  if(!declarations[tm]) declarations[tm]=[];
-  declarations[tm].push({declNo:no,declDate:date});
-  if(!(tm in ipDeclared)) ipDeclared[tm]=true;
-  else if(ipDeclared[tm]===false) ipDeclared[tm]=true;
+  if(!amt||amt<=0){alert('통관금액을 입력해주세요.');return;}
+  if(!clearances[tm]) clearances[tm]=[];
+  clearances[tm].push({invNo:invNo||no, amt, date, declNo:no, declDate:date});
   render();
 }
 
 function removeDecl(tm,idx){
-  if(!confirm('수입신고 기록을 삭제하시겠습니까?'))return;
-  if(declarations[tm]) declarations[tm].splice(idx,1);
-  if(declarations[tm]&&declarations[tm].length===0){delete declarations[tm];delete ipDeclared[tm];}
+  if(!confirm('통관 이력을 삭제하시겠습니까?'))return;
+  if(clearances[tm]) clearances[tm].splice(idx,1);
+  if(clearances[tm]&&clearances[tm].length===0) delete clearances[tm];
   render();
 }
 
@@ -512,13 +551,7 @@ function toggleSelect(id){
 function toggleSelectAll(el){
   const groups=buildGroups();
   if(el.checked){
-    groups.forEach(g=>{
-      const decls=declarations[g.tmCode]||[];
-      g.allRows.forEach(row=>{
-        const isDeclared=(row.stage==='FAB'&&decls.length>0)||(row.stage==='IP'&&ipDeclared[g.tmCode]===true);
-        if(!isDeclared) selectedRows.add(row.id);
-      });
-    });
+    groups.forEach(g=>{if(tmStatus(g)!=='done') g.allRows.forEach(r=>selectedRows.add(r.id));});
   } else { selectedRows.clear(); }
   render(); updateActionBar();
 }
@@ -530,17 +563,15 @@ function updateActionBar(){
   if(selectedRows.size===0){ bar.classList.remove('show'); return; }
   bar.classList.add('show');
   let totalAmt=0;
-  const groups=buildGroups();
-  groups.forEach(g=>g.allRows.forEach(r=>{ if(selectedRows.has(r.id)) totalAmt+=r.amount; }));
+  buildGroups().forEach(g=>g.allRows.forEach(r=>{ if(selectedRows.has(r.id)) totalAmt+=r.amount; }));
   $('sel-count').textContent=`${selectedRows.size}건 선택`;
   $('sel-amt').textContent=`합계: ${fmtUsd(totalAmt)}`;
 }
 
 function goToInvoicePage(){
   if(selectedRows.size===0){ alert('통관할 항목을 선택해주세요.'); return; }
-  const groups=buildGroups();
   const items=[];
-  groups.forEach(g=>g.allRows.forEach(r=>{
+  buildGroups().forEach(g=>g.allRows.forEach(r=>{
     if(selectedRows.has(r.id)){
       items.push({id:r.id,stage:r.stage,vendor:r.vendor,invoiceNo:r.invoiceNo,invoiceDate:r.invoiceDate,
         item:r.item,unitPrice:r.unitPrice,qty:r.qty,amount:r.amount,poNo:r.poNo,
