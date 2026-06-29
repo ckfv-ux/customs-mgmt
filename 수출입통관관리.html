@@ -118,6 +118,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .btn-action { background: #16a34a; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; margin-left: auto; }
 .btn-action:hover { background: #15803d; }
 
+/* 기간 바 */
+.period-bar { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
+.period-label { font-size: 12px; font-weight: 600; color: #6b7280; flex-shrink: 0; }
+.year-tabs { display: flex; gap: 4px; }
+.year-tab { padding: 4px 13px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid #e5e7eb; color: #6b7280; background: #fff; }
+.year-tab.active { background: #1e40af; color: #fff; border-color: #1e40af; }
+.qtr-btns { display: flex; gap: 4px; }
+.qtr-btn { padding: 4px 11px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid #e5e7eb; color: #6b7280; background: #fff; }
+.qtr-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
 @media (max-width: 1400px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
@@ -126,6 +136,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
   <div class="breadcrumb">매입 관리 &gt; 수출입통관 &gt; <span>통관 관리</span></div>
   <div class="page-header">
     <h1 class="page-title">수출입통관 관리</h1>
+    <button class="btn btn-ghost btn-sm" onclick="exportMainExcel()">↓ Excel 내보내기</button>
+  </div>
+
+  <!-- 기간 선택 -->
+  <div class="period-bar">
+    <span class="period-label">조회 기간</span>
+    <div class="year-tabs" id="year-tabs"></div>
+    <div style="width:1px;height:22px;background:#e5e7eb;"></div>
+    <div class="qtr-btns" id="qtr-btns"></div>
   </div>
 
   <!-- 검색 조건 -->
@@ -135,8 +154,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
       <span class="section-title">검색 조건</span>
     </div>
     <div class="filter-row">
-      <div class="fg"><label>기간 (시작)</label><input id="f-from" type="date" class="form-input" value="2026-01-01"></div>
-      <div class="fg"><label>기간 (종료)</label><input id="f-to" type="date" class="form-input" value="2026-12-31"></div>
       <div class="fg"><label>TM Code</label><input id="f-tm" type="text" class="form-input" placeholder="TMCODE..."></div>
       <div class="fg"><label>과제명</label><input id="f-project" type="text" class="form-input" placeholder="과제명"></div>
       <div class="fg"><label>고객사</label><input id="f-customer" type="text" class="form-input" placeholder="고객사"></div>
@@ -279,6 +296,8 @@ let clearances = {
 };
 
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
+const YEARS=[2025,2026], CUR_YEAR=2026;
+let selYear=2026, selQtr=0;
 let activeFilter = '';
 let tmCollapsed = new Set();
 let selectedRows = new Set();
@@ -289,11 +308,18 @@ const fmtQ=n=>Number(n||0)%1===0?String(Number(n||0)):Number(n).toFixed(2);
 
 function inPeriod(d){
   if(!d) return false;
-  const from=$('f-from').value, to=$('f-to').value;
-  if(from && d<from) return false;
-  if(to && d>to) return false;
-  return true;
+  const y=parseInt(d.slice(0,4));
+  if(y!==selYear) return false;
+  if(selQtr===0) return true;
+  return Math.ceil(parseInt(d.slice(5,7))/3)===selQtr;
 }
+
+function renderPeriodBar(){
+  $('year-tabs').innerHTML=YEARS.map(y=>`<div class="year-tab${y===selYear?' active':''}" onclick="setYear(${y})">${y}</div>`).join('');
+  $('qtr-btns').innerHTML=[['전체',0],['Q1',1],['Q2',2],['Q3',3],['Q4',4]].map(([l,q])=>`<div class="qtr-btn${selQtr===q?' active':''}" onclick="setQtr(${q})">${l}</div>`).join('');
+}
+function setYear(y){selYear=y;selQtr=0;activeFilter='';renderPeriodBar();render();}
+function setQtr(q){selQtr=q;activeFilter='';renderPeriodBar();render();}
 
 function buildGroups(){
   const all=[...CLAIM_DATA,...IP_DATA];
@@ -537,10 +563,34 @@ function removeDecl(tm,idx){
 // ─── 검색 초기화 ─────────────────────────────────────────────────────────────
 function resetFilters(){
   ['f-tm','f-project','f-customer','f-al'].forEach(id=>$(id).value='');
-  $('f-from').value='2026-01-01';$('f-to').value='2026-12-31';
   activeFilter='';render();
 }
-['f-tm','f-project','f-customer','f-al','f-from','f-to'].forEach(id=>$(id).addEventListener('input',()=>{activeFilter='';render();}));
+['f-tm','f-project','f-customer','f-al'].forEach(id=>$(id).addEventListener('input',()=>{activeFilter='';render();}));
+
+// ─── Excel 내보내기 ──────────────────────────────────────────────────────────
+function exportMainExcel(){
+  const groups=buildGroups();
+  let csv='﻿';
+  csv+=`"수출입통관 현황 — ${selYear}년${selQtr>0?' Q'+selQtr:''}"\n\n`;
+  csv+='"TM Code","과제명","고객사","AL Code","상태","Invoice 합계($)","통관완료($)","잔여($)","단계","외주처","Invoice No.","Invoice일","ITEM","PO No.","Unit Price($)","Qty","Invoice Amt($)"\n';
+  groups.forEach(g=>{
+    const st=tmStatus(g);
+    const total=tmTotal(g);
+    const cleared=tmCleared(g.tmCode);
+    const remaining=tmRemaining(g);
+    const stLabel={pending:'미통관',partial:'부분통관',done:'통관완료'}[st];
+    g.allRows.forEach((r,ri)=>{
+      csv+=`"${g.tmCode}","${g.project}","${g.customer}","${g.alCode}","${stLabel}",${ri===0?total:''},${ri===0?cleared:''},${ri===0?remaining:''},"${r.stage}","${r.vendor}","${r.stage==='FAB'?r.invoiceNo:''}","${r.stage==='FAB'?r.invoiceDate:''}","${r.item}","${r.poNo}",${r.unitPrice},${r.qty},${r.amount}\n`;
+    });
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`통관현황_${selYear}${selQtr>0?'_Q'+selQtr:''}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 // ─── 체크박스 선택 ───────────────────────────────────────────────────────────
 function toggleSelect(id){
@@ -582,6 +632,7 @@ function goToInvoicePage(){
   window.location.href='통관등록.html';
 }
 
+renderPeriodBar();
 render();
 </script>
 </body>

@@ -10,7 +10,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .page-container { max-width: 1000px; margin: 0 auto; padding: 20px 24px 100px; }
 .breadcrumb { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
 .breadcrumb a { color: #2563eb; text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
 .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .page-title { font-size: 20px; font-weight: 700; color: #111827; }
 
@@ -25,6 +24,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .btn-green:hover { background: #15803d; }
 .btn-blue { background: #2563eb; color: #fff; }
 .btn-blue:hover { background: #1d4ed8; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-red { background: transparent; color: #b91c1c; border: 1px solid #fca5a5; font-size: 11px; padding: 2px 8px; }
+.btn-red:hover { background: #fef2f2; }
 
 .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .form-grid .fg { display: flex; flex-direction: column; }
@@ -33,8 +35,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .form-grid input:focus { border-color: #2563eb; }
 
 /* Invoice 문서 */
-.inv-doc { background: #fff; border: 2px solid #000; padding: 0; font-family: 'Courier New', 'Consolas', monospace; font-size: 11px; line-height: 1.4; color: #000; }
-
+.inv-doc { background: #fff; border: 2px solid #000; font-family: 'Courier New', 'Consolas', monospace; font-size: 11px; line-height: 1.4; color: #000; }
 .inv-top { display: flex; justify-content: space-between; padding: 20px 24px 12px; }
 .inv-company { font-size: 12px; font-weight: 700; }
 .inv-addr { font-size: 10px; color: #333; margin-top: 2px; }
@@ -43,14 +44,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .inv-title-text { font-size: 20px; font-weight: 900; letter-spacing: 3px; }
 .inv-no-grid { display: grid; grid-template-columns: auto auto; gap: 2px 12px; font-size: 11px; }
 .inv-no-label { font-weight: 700; text-align: right; }
-
 .inv-parties { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #000; border-bottom: 1px solid #000; }
 .inv-party { padding: 10px 24px; font-size: 10px; line-height: 1.5; }
 .inv-party:first-child { border-right: 1px solid #ccc; }
 .inv-party-title { font-weight: 700; font-size: 11px; margin-bottom: 4px; }
-
 .inv-terms { padding: 6px 24px; font-size: 10px; border-bottom: 1px solid #000; display: flex; justify-content: space-between; }
-
 .inv-tbl { width: 100%; border-collapse: collapse; }
 .inv-tbl th { background: #f0f0f0; border: 1px solid #000; padding: 6px 8px; font-size: 10px; font-weight: 700; text-align: center; }
 .inv-tbl td { border-left: 1px solid #ccc; border-right: 1px solid #ccc; padding: 4px 8px; font-size: 11px; vertical-align: top; }
@@ -58,32 +56,37 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 .inv-tbl .ctr { text-align: center; }
 .inv-tbl .item-row td { border-bottom: none; }
 .inv-tbl .sub-row td { border-top: none; padding-top: 0; font-size: 10px; color: #555; }
-
-.inv-sep { border-top: 1px dashed #000; margin: 0 24px; }
-
+.inv-tbl input { width: 100%; padding: 2px 4px; border: 1px dashed #d1d5db; border-radius: 3px; font-size: 11px; font-family: inherit; outline: none; background: #fffef0; }
+.inv-tbl input:focus { border-color: #2563eb; background: #fff; }
+.inv-tbl input.r { text-align: right; }
+.inv-tbl input.c { text-align: center; }
 .inv-total-section { padding: 8px 24px; }
 .inv-total-line { display: flex; justify-content: flex-end; gap: 20px; font-size: 12px; padding: 4px 0; }
 .inv-total-label { font-weight: 700; }
 .inv-total-amt { font-weight: 700; min-width: 120px; text-align: right; }
-.inv-grand { border-top: 2px solid #000; border-bottom: 2px double #000; padding: 6px 0; margin-top: 4px; }
-
 .inv-footer { padding: 16px 24px; font-size: 10px; line-height: 1.6; border-top: 1px solid #000; }
 
-/* 하단 바 */
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 28px; display: flex; align-items: center; gap: 12px; justify-content: flex-end; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,.08); }
+/* 원본 항목 참고 */
+.source-card { background: #f8f9fb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
+.source-title { font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 6px; }
+.source-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+.source-tbl th { background: #f0f0f0; padding: 4px 8px; text-align: center; border: 1px solid #e5e7eb; font-size: 10px; }
+.source-tbl td { padding: 4px 8px; border: 1px solid #f0f0f0; text-align: center; }
+.source-tbl .l { text-align: left; }
 
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e5e7eb; padding: 12px 28px; display: flex; align-items: center; gap: 12px; justify-content: flex-end; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,.08); }
 .no-items { text-align: center; padding: 60px; color: #9ca3af; }
 .no-items a { color: #2563eb; }
 
-/* 인쇄용 */
 @media print {
   body { background: #fff; }
   .page-container { padding: 0; max-width: 100%; }
-  .breadcrumb, .page-header, .card:first-of-type, .bottom-bar, .no-print { display: none !important; }
+  .breadcrumb, .page-header, .no-print, .bottom-bar { display: none !important; }
   .card { box-shadow: none; margin: 0; }
   .card-header { display: none; }
   .card-body { padding: 0; }
   .inv-doc { border: none; }
+  .inv-tbl input { border: none; background: transparent; }
   @page { margin: 15mm 10mm; size: A4; }
 }
 </style>
@@ -115,13 +118,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     </div>
   </div>
 
-  <!-- Invoice 문서 미리보기 -->
+  <!-- 원본 항목 참고 -->
+  <div class="card no-print" id="source-card">
+    <div class="card-header">선택한 원본 항목 (참고용)
+      <div style="margin-left:auto;font-size:11px;color:#9ca3af;">아래 Invoice에서 항목을 편집하세요. 합치거나 분리 가능.</div>
+    </div>
+    <div class="card-body" style="padding:10px 20px;">
+      <table class="source-tbl">
+        <thead><tr><th>단계</th><th>외주처</th><th>ITEM</th><th>PO No.</th><th>Unit Price</th><th>Qty</th><th>Amount</th></tr></thead>
+        <tbody id="source-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Invoice 문서 -->
   <div class="card">
-    <div class="card-header no-print">Invoice 미리보기</div>
+    <div class="card-header no-print">Invoice 미리보기
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="addInvLine()">+ 행 추가</button>
+    </div>
     <div class="card-body" style="padding:0;">
       <div class="inv-doc" id="inv-doc">
-
-        <!-- 상단 -->
         <div class="inv-top">
           <div>
             <div class="inv-company">Taiwan Semiconductor Manufacturing Co.,LTD.</div>
@@ -139,8 +155,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
             <div style="font-size:10px;color:#666;margin-top:4px;">(Security C - TSMC Internal)</div>
           </div>
         </div>
-
-        <!-- SHIP TO / BILL TO -->
         <div class="inv-parties">
           <div class="inv-party">
             <div class="inv-party-title">SHIP TO :</div>
@@ -160,14 +174,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
             <div>&nbsp; ATTN: Ms. Sue</div>
           </div>
         </div>
-
-        <!-- Terms -->
         <div class="inv-terms">
           <div>PAYMENT TERMS: 100% down payment - cash with order<br>DELIVERY TERMS : EXW-TSMC</div>
           <div style="text-align:right;">SHIP VIA: <span id="prev-ship"></span><br>ORIGIN: TAIWAN</div>
         </div>
-
-        <!-- Item table -->
         <table class="inv-tbl">
           <thead>
             <tr>
@@ -177,20 +187,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
               <th style="width:110px;">UNIT PRICE/UNIT</th>
               <th style="width:70px;">QUANTITY</th>
               <th style="width:120px;">AMOUNT</th>
+              <th style="width:30px;" class="no-print"></th>
             </tr>
           </thead>
           <tbody id="inv-items"></tbody>
         </table>
-
-        <!-- Total -->
-        <div class="inv-sep"></div>
+        <div style="border-top:1px dashed #000;margin:0 24px;"></div>
         <div class="inv-total-section">
           <div class="inv-total-line">
             <span>GRAND TOTAL</span>
             <span class="inv-total-label">USD</span>
             <span class="inv-total-amt" id="inv-grand-total">0.00</span>
           </div>
-          <div class="inv-sep" style="margin:4px 0;"></div>
+          <div style="border-top:1px solid #999;margin:4px 0;"></div>
           <div class="inv-total-line">
             <span>THANK YOU FOR YOUR ORDER.</span>
             <span class="inv-total-label">TOTAL INVOICE AMOUNT DUE :</span>
@@ -199,28 +208,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
           </div>
           <div style="border-top:3px double #000;margin-top:4px;"></div>
         </div>
-
-        <!-- Footer -->
         <div class="inv-footer">
           <div>Payment please wire to:</div>
           <div>&nbsp; CITIBANK TAIWAN LIMITED, TAIWAN</div>
           <div>&nbsp; SWIFT Code: CITITWTX</div>
           <div>&nbsp; Account Name: Taiwan Semiconductor Manufacturing Company LTD.</div>
           <div>&nbsp; Account No.: 5019571205</div>
-          <br>
-          <div>Remark:</div>
-          <div>COMMENTS:</div>
-          <br>
+          <br><div>Remark:</div><div>COMMENTS:</div><br>
           <div>FOR INVOICE DETAIL, PLEASE CONTACT Nicole Lin</div>
         </div>
-
         <div style="padding:4px 24px 8px;font-size:9px;color:#999;border-top:1px solid #eee;">Page 1 of 1</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 하단 바 -->
 <div class="bottom-bar no-print">
   <span style="margin-right:auto;font-size:13px;color:#6b7280;" id="bottom-summary"></span>
   <button class="btn btn-ghost" onclick="window.location.href='수출입통관관리.html'">← 돌아가기</button>
@@ -232,13 +234,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
 const $=id=>document.getElementById(id);
 const fmtN=n=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 
-let items=[];
-try { items=JSON.parse(localStorage.getItem('customsInvoiceItems')||'[]'); } catch(e){}
+let sourceItems=[];
+try { sourceItems=JSON.parse(localStorage.getItem('customsInvoiceItems')||'[]'); } catch(e){}
 
-if(!items.length){
+if(!sourceItems.length){
   $('no-items').classList.remove('hidden');
   $('settings-card').style.display='none';
+  $('source-card').style.display='none';
 }
+
+// 편집 가능한 Invoice 라인 (초기값은 원본에서 복사)
+let invLines = sourceItems.map((item,i)=>({
+  idx: i,
+  custOrder: item.poNo || item.invoiceNo || '',
+  product: item.project || '',
+  description: item.item,
+  unitPrice: item.unitPrice,
+  unit: item.qty===1?'LT':'PCS',
+  qty: item.qty,
+  amount: item.amount
+}));
 
 const today=new Date().toISOString().slice(0,10);
 $('inv-date').value=today;
@@ -253,60 +268,100 @@ function updatePreview(){
   $('prev-ship').textContent=$('inv-ship').value||'';
 }
 
-function renderItems(){
+function renderSource(){
+  let h='';
+  sourceItems.forEach(item=>{
+    const tag=item.stage==='FAB'?'<span style="background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;">FAB</span>':'<span style="background:#fef9c3;color:#854d0e;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;">IP</span>';
+    h+=`<tr>
+      <td>${tag}</td>
+      <td>${item.vendor}</td>
+      <td class="l">${item.item}</td>
+      <td style="font-family:monospace;font-size:10px;">${item.poNo||'—'}</td>
+      <td style="text-align:right;">$${fmtN(item.unitPrice)}</td>
+      <td>${typeof item.qty==='number'&&item.qty%1!==0?item.qty.toFixed(2):item.qty}</td>
+      <td style="text-align:right;font-weight:600;color:#1d4ed8;">$${fmtN(item.amount)}</td>
+    </tr>`;
+  });
+  $('source-body').innerHTML=h;
+}
+
+function renderInvoice(){
   let html='', total=0;
-
-  items.forEach((item,i)=>{
-    total+=item.amount;
-    const unitLabel=item.qty===1?'/LT':'/PCS';
-
+  invLines.forEach((line,i)=>{
+    total+=Number(line.amount)||0;
     html+=`<tr class="item-row">
-      <td class="ctr" rowspan="2" style="border-bottom:1px solid #eee;padding-top:10px;">${i+1}</td>
-      <td rowspan="1" style="font-size:10px;">PO:${item.poNo||item.invoiceNo}</td>
-      <td style="font-weight:600;">${item.item}</td>
-      <td class="amt">${fmtN(item.unitPrice)} ${unitLabel}</td>
-      <td class="ctr">${typeof item.qty==='number'&&item.qty%1!==0?item.qty.toFixed(2):item.qty}</td>
-      <td class="amt" style="font-weight:700;">${fmtN(item.amount)}</td>
-    </tr>
-    <tr class="sub-row">
-      <td style="border-bottom:1px solid #eee;">${item.project||''}</td>
-      <td style="border-bottom:1px solid #eee;" colspan="4"></td>
+      <td class="ctr" style="border-bottom:1px solid #eee;padding-top:8px;font-weight:600;">${i+1}</td>
+      <td style="border-bottom:1px solid #eee;">
+        <input value="${esc(line.custOrder)}" onchange="setLine(${i},'custOrder',this.value)" placeholder="PO No.">
+        <input value="${esc(line.product)}" onchange="setLine(${i},'product',this.value)" placeholder="Product" style="margin-top:2px;font-size:10px;color:#555;">
+      </td>
+      <td style="border-bottom:1px solid #eee;">
+        <input value="${esc(line.description)}" onchange="setLine(${i},'description',this.value)" placeholder="ITEM 설명" style="font-weight:600;">
+      </td>
+      <td style="border-bottom:1px solid #eee;">
+        <input class="r" type="number" step="0.01" value="${line.unitPrice}" onchange="setNum(${i},'unitPrice',this.value)">
+        <div style="text-align:right;font-size:9px;color:#999;">/${line.unit}</div>
+      </td>
+      <td style="border-bottom:1px solid #eee;">
+        <input class="c" type="number" step="0.01" value="${line.qty}" onchange="setNum(${i},'qty',this.value)">
+      </td>
+      <td class="amt" style="border-bottom:1px solid #eee;font-weight:700;font-size:12px;">
+        ${fmtN(line.amount)}
+      </td>
+      <td class="ctr no-print" style="border-bottom:1px solid #eee;">
+        <button class="btn-red" onclick="removeLine(${i})">×</button>
+      </td>
     </tr>`;
   });
 
-  if(!items.length){
-    html=`<tr><td colspan="6" style="text-align:center;padding:40px;color:#999;">항목이 없습니다.</td></tr>`;
+  if(!invLines.length){
+    html=`<tr><td colspan="7" style="text-align:center;padding:30px;color:#999;">행을 추가하세요.</td></tr>`;
   }
 
   $('inv-items').innerHTML=html;
   $('inv-grand-total').textContent=fmtN(total);
   $('inv-total-due').textContent=fmtN(total);
-  $('bottom-summary').textContent=`${items.length}건 · USD ${fmtN(total)}`;
+  $('bottom-summary').textContent=`${invLines.length}건 · USD ${fmtN(total)}`;
+}
+
+function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function setLine(i,f,v){invLines[i][f]=v;}
+
+function setNum(i,f,v){
+  invLines[i][f]=Number(v)||0;
+  invLines[i].amount=invLines[i].unitPrice*invLines[i].qty;
+  renderInvoice();
+}
+
+function addInvLine(){
+  invLines.push({idx:invLines.length,custOrder:'',product:'',description:'',unitPrice:0,unit:'PCS',qty:0,amount:0});
+  renderInvoice();
+}
+
+function removeLine(i){
+  invLines.splice(i,1);
+  renderInvoice();
 }
 
 function exportExcel(){
   const invNo=$('inv-no').value||'INVOICE';
   const invDate=$('inv-date').value||'';
   const dateStr=invDate?new Date(invDate).toLocaleDateString('en-US'):'';
-  const total=items.reduce((s,i)=>s+i.amount,0);
+  const total=invLines.reduce((s,l)=>s+(Number(l.amount)||0),0);
 
   let csv='﻿';
   csv+='"TAIWAN SEMICONDUCTOR MANUFACTURING CO.,LTD"\n';
   csv+='"No. 8, Li-Hsin Rd, VI, SCIENCE BASED INDUSTRIAL PARK"\n';
-  csv+='"HSIN-CHU 300. TAIWAN"\n';
-  csv+='\n';
+  csv+='"HSIN-CHU 300. TAIWAN"\n\n';
   csv+=`"INVOICE NO.","${invNo}"\n`;
-  csv+=`"INVOICE DATE","${dateStr}"\n`;
-  csv+='\n';
-  csv+='"SHIP TO:","ASICLAND Co., Ltd.","309, Richplaza3, Daehak-ro60","Yeongtong-gu, Suwon-si, Gyeonggi-do","SOUTH KOREA"\n';
-  csv+='\n';
+  csv+=`"INVOICE DATE","${dateStr}"\n\n`;
+  csv+='"SHIP TO:","ASICLAND Co., Ltd.","309, Richplaza3, Daehak-ro60","Yeongtong-gu, Suwon-si, Gyeonggi-do","SOUTH KOREA"\n\n';
   csv+='"ITEM","CUSTOMER ORDER/PRODUCT","DESCRIPTION","UNIT PRICE","QTY","AMOUNT"\n';
-  items.forEach((item,i)=>{
-    const po=item.poNo||item.invoiceNo||'';
-    csv+=`${i+1},"${po} / ${item.project||''}","${item.item}",${item.unitPrice},${item.qty},${item.amount}\n`;
+  invLines.forEach((line,i)=>{
+    csv+=`${i+1},"${line.custOrder}","${line.description}",${line.unitPrice},${line.qty},${line.amount}\n`;
   });
-  csv+='\n';
-  csv+=`"","","","","GRAND TOTAL USD",${total}\n`;
+  csv+=`\n"","","","","GRAND TOTAL USD",${total}\n`;
   csv+=`"","","","","TOTAL INVOICE AMOUNT DUE: USD",${total}\n`;
 
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
@@ -319,7 +374,8 @@ function exportExcel(){
 }
 
 updatePreview();
-renderItems();
+renderSource();
+renderInvoice();
 </script>
 </body>
 </html>
