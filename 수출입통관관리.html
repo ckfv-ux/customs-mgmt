@@ -448,7 +448,7 @@ function render(){
           <td style="text-align:left;font-size:12px;">${row.item}</td>
           <td style="text-align:right;font-size:11px;color:#374151;">${fmtUsd(row.unitPrice)}</td>
           <td>${fmtQ(row.qty)}</td>
-          <td style="text-align:right;font-weight:700;color:#1d4ed8;">${fmtUsd(row.amount)}</td>
+          <td style="text-align:right;font-weight:700;color:#1d4ed8;">${fmtUsd(row.amount)}${row.poNo?`<div style="font-size:9px;color:#9ca3af;font-weight:400;font-family:monospace;margin-top:1px;">${row.poNo}</div>`:''}</td>
           <td style="background:rgba(240,253,244,.5);font-family:monospace;font-size:11px;color:${isDeclared?'#15803d':'#d1d5db'};">${isDeclared&&decl?decl.declNo:'—'}</td>
           <td style="background:rgba(240,253,244,.5);font-size:11px;color:#6b7280;">${isDeclared&&decl?decl.declDate:'—'}</td>
         </tr>`;
