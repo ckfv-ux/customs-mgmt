@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSMC Invoice 등록 조회 — MJ 자동화 대시보드</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif; font-size: 13px; background: #f5f6f8; color: #1a1a2e; }
+
+.page-container { max-width: 1900px; margin: 0 auto; padding: 20px 24px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 700; color: #111827; }
+.breadcrumb { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+.breadcrumb span { color: #6b7280; }
+
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 16px; }
+
+.btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: background .15s; }
+.btn-primary   { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-secondary { background: #fff; color: #374151; border: 1px solid #d1d5db; }
+.btn-secondary:hover { background: #f9fafb; }
+.btn-ghost     { background: transparent; color: #6b7280; border: 1px solid #e5e7eb; }
+.btn-ghost:hover { background: #f3f4f6; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-orange { background: #f97316; color: #fff; }
+.btn-orange:hover { background: #ea580c; }
+
+.form-label { display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px; }
+.form-input, .form-select { width: 100%; padding: 7px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; color: #111827; background: #fff; outline: none; transition: border-color .15s; }
+.form-input:focus, .form-select:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.1); }
+
+.section-header { display: flex; align-items: center; gap: 8px; padding: 14px 20px; border-bottom: 1px solid #f0f0f0; }
+.section-number { width: 22px; height: 22px; border-radius: 50%; background: #2563eb; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-title { font-size: 14px; font-weight: 700; color: #111827; }
+.section-subtitle { font-size: 12px; color: #9ca3af; }
+
+.filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 16px; padding: 16px 20px; }
+.date-wrap { display: flex; align-items: center; gap: 6px; }
+.date-wrap .form-input { flex: 1; min-width: 0; }
+
+.tbl-wrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+.tbl th { background: #f8f9fb; color: #6b7280; font-weight: 600; padding: 7px 10px; text-align: center; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #f0f0f0; }
+.tbl td { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; vertical-align: middle; text-align: center; }
+.tbl .th-group { font-size: 11px; padding: 5px 10px; font-weight: 700; }
+
+/* 커스텀 인보이스 행 — 황색 배경 + 왼쪽 주황 테두리 */
+.row-custom > td { background: #fffbeb !important; }
+.row-custom { border-left: 3px solid #f59e0b; }
+
+/* 그룹 구분선 */
+.row-sep td { height: 5px; background: #e2e8f0; padding: 0; border: none; }
+
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+.badge-blue    { background: #dbeafe; color: #1d4ed8; }
+.badge-green   { background: #dcfce7; color: #15803d; }
+.badge-orange  { background: #ffedd5; color: #c2410c; }
+.badge-gray    { background: #f3f4f6; color: #6b7280; }
+.badge-custom  { background: #fef3c7; color: #b45309; border: 1px dashed #f59e0b; }
+
+.status-needed   { background: #fee2e2; color: #b91c1c; }
+.status-progress { background: #dbeafe; color: #1d4ed8; }
+.status-done     { background: #dcfce7; color: #15803d; }
+.status-partial  { background: #fef3c7; color: #b45309; }
+
+.sum-strip { display: flex; align-items: center; gap: 24px; padding: 10px 20px; background: #f8f9fb; border-top: 1px solid #f0f0f0; border-radius: 0 0 8px 8px; flex-wrap: wrap; }
+.sum-label { font-size: 12px; color: #6b7280; }
+.sum-value { font-size: 13px; font-weight: 700; color: #111827; margin-left: 6px; }
+.sum-divider { width: 1px; height: 16px; background: #e5e7eb; }
+
+/* 과제별 잔여 요약 테이블 */
+.proj-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.proj-table th { background: #f0fdf4; color: #15803d; font-weight: 600; padding: 7px 12px; text-align: center; border-bottom: 2px solid #bbf7d0; border-right: 1px solid #e5e7eb; }
+.proj-table td { padding: 7px 12px; border-bottom: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; text-align: center; }
+.proj-table tr:hover td { background: #f9fafb; }
+
+/* 모달 */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 28px; width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-title { font-size: 16px; font-weight: 700; color: #111827; }
+.modal-close { background: none; border: none; font-size: 18px; color: #9ca3af; cursor: pointer; line-height: 1; }
+.modal-notice { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #92400e; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-grid .full { grid-column: 1/-1; }
+</style>
+</head>
+<body>
+
+<div class="page-container">
+  <div class="breadcrumb">수출입 관리 &gt; TSMC Invoice 등록 조회 &gt; <span>Invoice 목록</span></div>
+  <div class="page-header">
+    <h1 class="page-title">TSMC Invoice 등록 조회</h1>
+    <!-- 섹션 ① : 상단 버튼 -->
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" onclick="alert('엑셀 다운로드는 실제 서비스에서 구현됩니다.')">⬇ 엑셀 파일 다운로드</button>
+      <button class="btn btn-primary" onclick="alert('인보이스 업로드(OCR) 기능은 실제 서비스에서 구현됩니다.')">↑ 인보이스 업로드</button>
+    </div>
+  </div>
+
+  <!-- 섹션 ② : 필터/검색 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <span class="section-title">필터 / 검색</span>
+      <span class="section-subtitle" style="margin-left:4px;">* 영역 선택 시 데이터는 매입청구 데이터에서 가져옴</span>
+    </div>
+    <div class="filter-grid">
+      <div>
+        <label class="form-label">Invoice #</label>
+        <input id="f-invoice" type="text" class="form-input" placeholder="0K...">
+      </div>
+      <div>
+        <label class="form-label">Invoice Date</label>
+        <div class="date-wrap">
+          <input id="f-date-from" type="date" class="form-input" value="2026-01-01">
+          <span style="color:#9ca3af;flex-shrink:0;">~</span>
+          <input id="f-date-to" type="date" class="form-input" value="2026-12-31">
+        </div>
+      </div>
+      <div>
+        <label class="form-label">SHIP TO</label>
+        <input id="f-shipto" type="text" class="form-input" placeholder="Anapass, E …">
+      </div>
+      <div>
+        <label class="form-label">PROJECT</label>
+        <input id="f-project" type="text" class="form-input" placeholder="과제명">
+      </div>
+      <div>
+        <label class="form-label">DESCRIPTION</label>
+        <input id="f-desc" type="text" class="form-input" placeholder="Wafer, MASK …">
+      </div>
+      <div>
+        <label class="form-label">TM CODE</label>
+        <input id="f-tmcode" type="text" class="form-input" placeholder="TMCODE_…">
+      </div>
+      <div>
+        <label class="form-label">CUSTOMS (수입신고 상태)</label>
+        <select id="f-customs" class="form-select">
+          <option value="">전체</option>
+          <option value="수입신고필요">수입신고 필요</option>
+          <option value="수입신고진행중">수입신고 진행중</option>
+          <option value="수입신고완료">수입신고 완료</option>
+          <option value="부분완료">부분 완료 (분할 입고)</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:0 20px 16px;">
+      <button class="btn btn-ghost btn-sm" onclick="resetFilters()">↺ 초기화</button>
+      <button class="btn btn-primary btn-sm" onclick="applyFilters()">검색</button>
+    </div>
+  </div>
+
+  <!-- 섹션 ③ : Invoice 목록 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <span class="section-title">Invoice 목록</span>
+      <span id="result-count" class="section-subtitle" style="margin-left:4px;"></span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <span class="badge badge-custom" style="font-size:11px;">커스텀 인보이스</span>
+        <span style="font-size:11px;color:#9ca3af;">= 실제 입고 수량 기준 수입신고용 (Invoice 금액 $0)</span>
+        <button class="btn btn-orange btn-sm" onclick="openCustomModal()">+ 커스텀 인보이스 등록</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl" id="main-table">
+        <thead>
+          <tr>
+            <th colspan="7" class="th-group" style="background:#eef2ff;color:#3730a3;">Invoice 정보</th>
+            <th colspan="4" class="th-group" style="background:#fffbeb;color:#92400e;">Invoice 라인 상세</th>
+            <th colspan="3" class="th-group" style="background:#f0fdf4;color:#15803d;">수입신고</th>
+            <th class="th-group" style="background:#fdf4ff;color:#7c3aed;">Remark</th>
+          </tr>
+          <tr>
+            <!-- Invoice 정보 (7) -->
+            <th style="min-width:88px;">구분</th>
+            <th style="min-width:88px;">Invoice Date</th>
+            <th style="min-width:168px;font-size:11px;">TSMC Invoice #</th>
+            <th style="min-width:68px;">Ship to</th>
+            <th style="min-width:90px;">TM Code</th>
+            <th style="min-width:120px;">Original<br>Project Name</th>
+            <th style="min-width:120px;">Booked<br>Project Name</th>
+            <!-- 라인 상세 (4) -->
+            <th style="min-width:170px;background:#fffbeb;text-align:left;">Description</th>
+            <th style="min-width:115px;background:#fffbeb;">Unit Price / Unit</th>
+            <th style="min-width:46px;background:#fffbeb;">Qty</th>
+            <th style="min-width:118px;background:#fffbeb;">Invoice Amount ($)</th>
+            <!-- 수입신고 (3) -->
+            <th style="min-width:120px;background:#f0fdf4;">수입신고금액 ($)<div style="font-size:10px;font-weight:400;color:#86efac;">SC-CTM-04 기준</div></th>
+            <th style="min-width:100px;background:#f0fdf4;">차이 ($)<div style="font-size:10px;font-weight:400;color:#86efac;">Invoice − 신고</div></th>
+            <th style="min-width:90px;background:#f0fdf4;">신고 상태</th>
+            <!-- Remark -->
+            <th style="min-width:180px;background:#fdf4ff;text-align:left;">Remark</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <div class="sum-strip" id="sum-strip"></div>
+  </div>
+
+  <!-- 섹션 ④ : 과제별 수입신고 현황 (잔여 추적) -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-number" style="background:#15803d;font-size:13px;">∑</div>
+      <span class="section-title">과제별 수입신고 현황</span>
+      <span class="section-subtitle" style="margin-left:4px;">PO 발주 수량 기준 — 수입신고 완료 / 잔여 수량 추적</span>
+    </div>
+    <div style="padding:16px 20px;">
+      <table class="proj-table" id="project-summary-table">
+        <thead>
+          <tr>
+            <th>과제명</th>
+            <th>TM Code</th>
+            <th>PO No.</th>
+            <th style="text-align:left;">Description</th>
+            <th>PO 발주수량</th>
+            <th>수입신고 완료</th>
+            <th>진행중</th>
+            <th>잔여 수량</th>
+            <th>잔여 금액 ($)</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody id="project-summary-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 커스텀 인보이스 등록 모달 -->
+<div id="custom-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">커스텀 인보이스 등록</span>
+      <button class="modal-close" onclick="closeCustomModal()">✕</button>
+    </div>
+    <div class="modal-notice">
+      ⚠ TSMC Invoice 수량과 <strong>실제 입고 수량이 다를 때</strong> 사용합니다.<br>
+      커스텀 인보이스는 <strong>Invoice 금액 $0</strong>으로 등록되며, 실제 수입신고금액을 별도 기입합니다.
+    </div>
+    <div class="modal-grid">
+      <div>
+        <label class="form-label">연결 TSMC Invoice # <span style="color:#b91c1c;">*</span></label>
+        <input id="cm-invoice" type="text" class="form-input" placeholder="0K… (기존 TSMC 인보이스 번호)">
+      </div>
+      <div>
+        <label class="form-label">커스텀 Invoice 날짜 <span style="color:#b91c1c;">*</span></label>
+        <input id="cm-date" type="date" class="form-input">
+      </div>
+      <div>
+        <label class="form-label">과제명 (Project) <span style="color:#b91c1c;">*</span></label>
+        <input id="cm-project" type="text" class="form-input" placeholder="과제명">
+      </div>
+      <div>
+        <label class="form-label">TM Code</label>
+        <input id="cm-tmcode" type="text" class="form-input" placeholder="TMCODE_…">
+      </div>
+      <div class="full">
+        <label class="form-label">Description</label>
+        <input id="cm-desc" type="text" class="form-input" placeholder='예) 12" Wafer (입고분 15/25매)'>
+      </div>
+      <div>
+        <label class="form-label">실제 입고 수량 <span style="color:#b91c1c;">*</span></label>
+        <input id="cm-qty" type="number" step="1" class="form-input" placeholder="실제 입고된 수량">
+      </div>
+      <div>
+        <label class="form-label">수입신고금액 ($)</label>
+        <input id="cm-customs-amt" type="number" step="0.01" class="form-input" placeholder="수입신고 금액 (USD)">
+      </div>
+      <div class="full">
+        <label class="form-label">PO No.</label>
+        <input id="cm-pono" type="text" class="form-input" placeholder="AL-…">
+      </div>
+      <div class="full">
+        <label class="form-label">Remark</label>
+        <input id="cm-remark" type="text" class="form-input" placeholder="예) TSMC Inv 0K64… 분할입고 15/25매">
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:20px;">
+      <button class="btn btn-ghost" onclick="closeCustomModal()">취소</button>
+      <button class="btn btn-orange" onclick="addCustomInvoice()">등록</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+// type: 'tsmc' = TSMC 정식 인보이스 | 'custom' = 커스텀 인보이스 (실제 입고 기준, $0)
+// customsStatus: 수입신고필요 / 수입신고진행중 / 수입신고완료 / 부분완료
+// linkedId: TSMC 행은 연결된 커스텀ID, custom 행은 부모 TSMC ID
+
+const DATA = [
+  // ── ANA38413_N1C : Mask 3 SET 전량 완료 ─────────────────────────────────
+  {
+    id:'ti-01', type:'tsmc',
+    invoiceDate:'2026-05-06', invoiceNo:'0K642605068Q',
+    shipTo:'Anapass', tmCode:'TMCODE_36',
+    origProject:'ANA38413_N1C', bookedProject:'ANA38413_N1C',
+    description:'6" MASK FOR WAFER', unitPrice:72682, unit:'SET', qty:3,
+    invoiceAmount:218046, poNo:'AL-RTO-20260324-22',
+    customsAmount:218046, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+  // ── ANA38413_N1C : pilot wafer 2EA 전량 완료 ─────────────────────────────
+  {
+    id:'ti-02', type:'tsmc',
+    invoiceDate:'2026-05-06', invoiceNo:'0K642605068R',
+    shipTo:'Anapass', tmCode:'TMCODE_36',
+    origProject:'ANA38413_N1C', bookedProject:'ANA38413_N1C',
+    description:'12" Wafer (pilot)', unitPrice:7436.40, unit:'EA', qty:2,
+    invoiceAmount:14872.80, poNo:'AL-NTO-20250903-23',
+    customsAmount:14872.80, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+  // ── Pegasus_N1B : TSMC 25EA 발송 → 실입고 15EA → 커스텀 인보이스 ─────────
+  {
+    id:'ti-03', type:'tsmc',
+    invoiceDate:'2026-05-08', invoiceNo:'0K64260509GB',
+    shipTo:'E', tmCode:'TMCODE_41',
+    origProject:'Pegasus_N1B', bookedProject:'Pegasus_N1B',
+    description:'12" Wafer', unitPrice:3513.30, unit:'EA', qty:25,
+    invoiceAmount:87832.50, poNo:'AL-MP-260108-31',
+    customsAmount:52699.50,           // 15EA × $3,513.30
+    customsStatus:'부분완료',
+    remark:'25EA 중 15EA 입고 완료, 잔여 10EA 추후 입고 예정',
+    linkedId:'ci-01',
+  },
+  {                                   // ◀ 커스텀 인보이스 — 실입고 15EA, $0
+    id:'ci-01', type:'custom',
+    invoiceDate:'2026-05-10', invoiceNo:'CUST-20260510-001',
+    shipTo:'E', tmCode:'TMCODE_41',
+    origProject:'Pegasus_N1B', bookedProject:'Pegasus_N1B',
+    description:'12" Wafer (입고분 15/25EA)', unitPrice:0, unit:'EA', qty:15,
+    invoiceAmount:0, poNo:'AL-MP-260108-31',
+    customsAmount:52699.50, customsStatus:'수입신고완료',
+    remark:'TSMC Inv 0K64260509GB 분할입고 15/25EA',
+    linkedId:'ti-03',
+  },
+  // ── MF62 : PO 2개 각 25EA, 전량 완료 ────────────────────────────────────
+  {
+    id:'ti-04', type:'tsmc',
+    invoiceDate:'2026-05-06', invoiceNo:'0K642605069K',
+    shipTo:'D', tmCode:'TMCODE_39',
+    origProject:'MF62', bookedProject:'MF62',
+    description:'8" Wafer', unitPrice:625, unit:'EA', qty:25,
+    invoiceAmount:15625, poNo:'AL-MP-20260112-21',
+    customsAmount:15625, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+  {
+    id:'ti-05', type:'tsmc',
+    invoiceDate:'2026-05-06', invoiceNo:'0K642605069K',
+    shipTo:'D', tmCode:'TMCODE_39',
+    origProject:'MF62', bookedProject:'MF62',
+    description:'8" Wafer', unitPrice:625, unit:'EA', qty:25,
+    invoiceAmount:15625, poNo:'AL-MP-20260211-21',
+    customsAmount:15625, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+  // ── KWU_C1 : Block fee 완료 ───────────────────────────────────────────────
+  {
+    id:'ti-06', type:'tsmc',
+    invoiceDate:'2026-05-06', invoiceNo:'0K64260506VV',
+    shipTo:'F', tmCode:'TMCODE_40',
+    origProject:'KWU_C1', bookedProject:'KWU_C1',
+    description:'BLOCK FEE', unitPrice:14854, unit:'LOT', qty:1,
+    invoiceAmount:14854, poNo:'AL-MPW-20260129-11',
+    customsAmount:14854, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+  // ── Pegasus_N1C : LOT Charge 수입신고 필요 ───────────────────────────────
+  {
+    id:'ti-07', type:'tsmc',
+    invoiceDate:'2026-05-21', invoiceNo:'0K6426050PX0',
+    shipTo:'E', tmCode:'TMCODE_50',
+    origProject:'Pegasus_N1C', bookedProject:'Pegasus_N1C',
+    description:'LOT Charge', unitPrice:34358.02, unit:'LOT', qty:1,
+    invoiceAmount:34358.02, poNo:'AL-NTO-260401-31',
+    customsAmount:0, customsStatus:'수입신고필요',
+    remark:'', linkedId:null,
+  },
+  // ── Pegasus_N1C : production wafer 25EA 수입신고 진행중 ─────────────────
+  {
+    id:'ti-08', type:'tsmc',
+    invoiceDate:'2026-05-21', invoiceNo:'0K6426050PX3',
+    shipTo:'E', tmCode:'TMCODE_50',
+    origProject:'Pegasus_N1C', bookedProject:'Pegasus_N1C',
+    description:'12" Wafer', unitPrice:3578.96, unit:'EA', qty:25,
+    invoiceAmount:89474, poNo:'AL-MP-260108-32',
+    customsAmount:0, customsStatus:'수입신고진행중',
+    remark:'세관 신고 진행중', linkedId:null,
+  },
+  // ── VS776Q_C2 : 7EA 중 4EA 입고 → 커스텀 인보이스 ─────────────────────
+  {
+    id:'ti-09', type:'tsmc',
+    invoiceDate:'2026-05-22', invoiceNo:'0K6426050RKW',
+    shipTo:'JK', tmCode:'TMCODE_51',
+    origProject:'VS776Q_C2', bookedProject:'VS776Q_C2',
+    description:'TMUV07_C51 reorder wafer', unitPrice:13787, unit:'EA', qty:7,
+    invoiceAmount:96509, poNo:'AL-MPW-20260312-11',
+    customsAmount:55148,              // 4EA × $13,787
+    customsStatus:'부분완료',
+    remark:'7EA 중 4EA 입고, 잔여 3EA 추후 입고 예정',
+    linkedId:'ci-02',
+  },
+  {                                   // ◀ 커스텀 인보이스 — 실입고 4EA, $0
+    id:'ci-02', type:'custom',
+    invoiceDate:'2026-05-24', invoiceNo:'CUST-20260524-001',
+    shipTo:'JK', tmCode:'TMCODE_51',
+    origProject:'VS776Q_C2', bookedProject:'VS776Q_C2',
+    description:'TMUV07_C51 reorder wafer (입고분 4/7EA)', unitPrice:0, unit:'EA', qty:4,
+    invoiceAmount:0, poNo:'AL-MPW-20260312-11',
+    customsAmount:55148, customsStatus:'수입신고완료',
+    remark:'TSMC Inv 0K6426050RKW 분할입고 4/7EA',
+    linkedId:'ti-09',
+  },
+  // ── TNR300 : IP Merge fee ─────────────────────────────────────────────────
+  {
+    id:'ti-10', type:'tsmc',
+    invoiceDate:'2026-05-12', invoiceNo:'0K6426050F15',
+    shipTo:'H', tmCode:'TMCODE_43',
+    origProject:'TNR300', bookedProject:'TNR300',
+    description:'IP MERGE SERVICE', unitPrice:3500, unit:'LOT', qty:1,
+    invoiceAmount:3500, poNo:'AL-MPW-20260316-22',
+    customsAmount:3500, customsStatus:'수입신고완료',
+    remark:'', linkedId:null,
+  },
+];
+
+// PO 발주 수량 맵 (매입청구목록의 poQty 기준)
+const PO_QTY_MAP = {
+  'AL-RTO-20260324-22': { poQty:3,  unitPrice:72682,   desc:'6" MASK FOR WAFER' },
+  'AL-NTO-20250903-23': { poQty:2,  unitPrice:7436.40, desc:'12" Wafer (pilot)' },
+  'AL-MP-260108-31':    { poQty:25, unitPrice:3513.30,  desc:'12" Wafer' },
+  'AL-MP-20260112-21':  { poQty:25, unitPrice:625,      desc:'8" Wafer' },
+  'AL-MP-20260211-21':  { poQty:25, unitPrice:625,      desc:'8" Wafer' },
+  'AL-MPW-20260129-11': { poQty:1,  unitPrice:14854,    desc:'BLOCK FEE' },
+  'AL-NTO-260401-31':   { poQty:1,  unitPrice:34358.02, desc:'LOT Charge' },
+  'AL-MP-260108-32':    { poQty:50, unitPrice:3578.96,  desc:'12" Wafer' },  // prevClaimed=25
+  'AL-MPW-20260312-11': { poQty:7,  unitPrice:13787,    desc:'reorder wafer' },
+  'AL-MPW-20260316-22': { poQty:1,  unitPrice:3500,     desc:'IP MERGE SERVICE' },
+};
+
+let filtered = [...DATA];
+let customIdCounter = DATA.filter(d => d.type === 'custom').length + 1;
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+const $     = id => document.getElementById(id);
+const fmtUsd = n => '$' + Number(n||0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtQ   = n => Number(n||0) % 1 === 0 ? String(Number(n||0)) : Number(n).toFixed(2);
+
+function statusBadge(s) {
+  const m = {
+    '수입신고필요':    { cls:'status-needed',   icon:'!' },
+    '수입신고진행중':  { cls:'status-progress',  icon:'⟳' },
+    '수입신고완료':    { cls:'status-done',      icon:'✓' },
+    '부분완료':        { cls:'status-partial',   icon:'△' },
+  };
+  const { cls, icon } = m[s] || { cls:'badge-gray', icon:'-' };
+  return `<span class="badge ${cls}">${icon} ${s}</span>`;
+}
+
+// ─── RENDER TABLE ─────────────────────────────────────────────────────────────
+function renderTable() {
+  const tbody = $('table-body');
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="100" style="color:#9ca3af;padding:48px;text-align:center;">조회된 Invoice 내역이 없습니다.</td></tr>`;
+    renderSummary([]);
+    renderProjectSummary([]);
+    $('result-count').textContent = '';
+    return;
+  }
+
+  let html = '';
+  let prevGroupId = null;
+
+  filtered.forEach(r => {
+    const isCustom = r.type === 'custom';
+    // 그룹 구분선: TSMC 행이 바뀔 때
+    const groupKey = isCustom ? r.linkedId : r.id;
+    if (!isCustom && prevGroupId !== null && prevGroupId !== r.id) {
+      html += `<tr class="row-sep"><td colspan="100"></td></tr>`;
+    }
+    if (!isCustom) prevGroupId = r.id;
+
+    const diff = isCustom ? 0 : (r.invoiceAmount - r.customsAmount);
+    const hasDiff = !isCustom && Math.abs(diff) > 0.01;
+
+    html += `<tr class="${isCustom ? 'row-custom' : ''}">`;
+
+    // 구분 배지
+    if (isCustom) {
+      html += `<td>
+        <span class="badge badge-custom" style="font-size:10px;line-height:1.4;">커스텀<br>인보이스</span>
+        <div style="font-size:10px;color:#9ca3af;margin-top:2px;">↑ ${r.linkedId}</div>
+      </td>`;
+    } else {
+      html += `<td><span class="badge badge-blue">TSMC</span></td>`;
+    }
+
+    // Invoice Date
+    html += `<td style="font-size:12px;color:#374151;">${r.invoiceDate}</td>`;
+
+    // Invoice No.
+    if (isCustom) {
+      html += `<td style="font-family:monospace;font-size:11px;color:#b45309;font-weight:700;letter-spacing:.3px;text-align:left;">${r.invoiceNo}</td>`;
+    } else {
+      html += `<td style="font-family:monospace;font-size:11px;font-weight:700;letter-spacing:.3px;color:#1e1b4b;text-align:left;">${r.invoiceNo}${r.linkedId ? `<span style="margin-left:5px;background:#fef3c7;color:#b45309;padding:1px 5px;border-radius:4px;font-size:10px;font-weight:600;">분할</span>` : ''}</td>`;
+    }
+
+    // Ship to, TM Code, Project Names
+    html += `<td style="font-size:12px;">${r.shipTo}</td>`;
+    html += `<td><span style="background:#f5f3ff;color:#6d28d9;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:500;">${r.tmCode}</span></td>`;
+    html += `<td style="font-size:12px;font-weight:600;color:#111827;">${r.origProject}</td>`;
+    html += `<td style="font-size:12px;color:#6b7280;">${r.bookedProject}</td>`;
+
+    // Description
+    html += `<td style="text-align:left;font-size:12px;">${r.description}</td>`;
+
+    // Unit Price / Unit
+    if (isCustom) {
+      html += `<td style="text-align:right;"><span style="color:#9ca3af;font-size:11px;">$0 (커스텀)</span> / ${r.unit}</td>`;
+    } else {
+      html += `<td style="text-align:right;color:#374151;">${fmtUsd(r.unitPrice)} / ${r.unit}</td>`;
+    }
+
+    // Qty
+    html += `<td style="font-weight:700;${isCustom ? 'color:#b45309;' : ''}">${fmtQ(r.qty)}</td>`;
+
+    // Invoice Amount
+    if (isCustom) {
+      html += `<td style="text-align:right;color:#9ca3af;background:#fffbeb;font-style:italic;">$0.00</td>`;
+    } else {
+      html += `<td style="text-align:right;font-weight:700;color:#1d4ed8;background:#eef5ff;">${fmtUsd(r.invoiceAmount)}</td>`;
+    }
+
+    // 수입신고금액
+    const cAmt = r.customsAmount;
+    if (cAmt > 0) {
+      html += `<td style="text-align:right;font-weight:700;color:#15803d;background:rgba(240,253,244,.6);">${fmtUsd(cAmt)}</td>`;
+    } else {
+      html += `<td style="text-align:right;color:#9ca3af;background:rgba(240,253,244,.6);">—</td>`;
+    }
+
+    // 차이
+    if (isCustom) {
+      html += `<td style="color:#9ca3af;background:rgba(240,253,244,.6);">—</td>`;
+    } else if (hasDiff) {
+      html += `<td style="text-align:right;color:#b45309;font-weight:700;background:rgba(240,253,244,.6);">${fmtUsd(diff)}</td>`;
+    } else if (r.customsAmount > 0) {
+      html += `<td style="color:#15803d;font-weight:600;background:rgba(240,253,244,.6);">$0.00 ✓</td>`;
+    } else {
+      html += `<td style="color:#9ca3af;background:rgba(240,253,244,.6);">—</td>`;
+    }
+
+    // 신고 상태
+    html += `<td style="background:rgba(240,253,244,.6);">${statusBadge(r.customsStatus)}</td>`;
+
+    // Remark
+    html += `<td style="text-align:left;font-size:12px;color:#6b7280;background:#fdf4ff;">${r.remark || ''}</td>`;
+
+    html += `</tr>`;
+  });
+
+  tbody.innerHTML = html;
+
+  const tsmcCount = filtered.filter(r => r.type === 'tsmc').length;
+  const customCount = filtered.filter(r => r.type === 'custom').length;
+  $('result-count').textContent = `— TSMC ${tsmcCount}건 / 커스텀 ${customCount}건`;
+
+  renderSummary(filtered);
+  renderProjectSummary(filtered);
+}
+
+// ─── SUMMARY STRIP ────────────────────────────────────────────────────────────
+function renderSummary(rows) {
+  const tsmc = rows.filter(r => r.type === 'tsmc');
+  const totalInvoice   = tsmc.reduce((s, r) => s + r.invoiceAmount, 0);
+  const totalDeclared  = tsmc.reduce((s, r) => s + r.customsAmount, 0);
+  const totalDiff      = totalInvoice - totalDeclared;
+  const doneCount      = tsmc.filter(r => r.customsStatus === '수입신고완료').length;
+  const partialCount   = tsmc.filter(r => r.customsStatus === '부분완료').length;
+  const needCount      = tsmc.filter(r => r.customsStatus === '수입신고필요' || r.customsStatus === '수입신고진행중').length;
+
+  $('sum-strip').innerHTML = `
+    <div class="sum-label">완료 <span class="sum-value" style="color:#15803d;">${doneCount}건</span></div>
+    <div class="sum-label">부분완료 <span class="sum-value" style="color:#b45309;">${partialCount}건</span></div>
+    <div class="sum-label">미완료 <span class="sum-value" style="color:#b91c1c;">${needCount}건</span></div>
+    <div class="sum-divider"></div>
+    <div class="sum-label">Invoice 합계 <span class="sum-value" style="color:#1d4ed8;">${fmtUsd(totalInvoice)}</span></div>
+    <div class="sum-divider"></div>
+    <div class="sum-label">수입신고 합계 <span class="sum-value" style="color:#15803d;">${fmtUsd(totalDeclared)}</span></div>
+    <div class="sum-divider"></div>
+    <div class="sum-label">미신고 잔액 <span class="sum-value" style="color:${totalDiff > 0.01 ? '#b45309' : '#15803d'};">${fmtUsd(totalDiff)}</span></div>
+  `;
+}
+
+// ─── PROJECT SUMMARY ─────────────────────────────────────────────────────────
+function renderProjectSummary(rows) {
+  // PO 단위로 그룹화
+  const map = {};
+  rows.filter(r => r.type === 'tsmc').forEach(r => {
+    const key = `${r.poNo}`;
+    if (!map[key]) {
+      map[key] = {
+        project: r.origProject, tmCode: r.tmCode, poNo: r.poNo,
+        desc: r.description, customsStatus: r.customsStatus,
+        invoiceQty: 0, declaredQty: 0, inProgressQty: 0,
+      };
+    }
+    map[key].invoiceQty += r.qty;
+    if (r.customsStatus === '수입신고완료') {
+      map[key].declaredQty += r.qty;
+    } else if (r.customsStatus === '수입신고진행중') {
+      map[key].inProgressQty += r.qty;
+    } else if (r.customsStatus === '부분완료') {
+      // 커스텀 인보이스의 실입고 수량을 declared로 계산
+      const custRows = rows.filter(c => c.type === 'custom' && c.poNo === r.poNo);
+      if (custRows.length) {
+        map[key].declaredQty += custRows.reduce((s, c) => s + c.qty, 0);
+      } else {
+        // 커스텀 행 없으면 customsAmount/unitPrice 로 추산
+        if (r.unitPrice > 0) {
+          map[key].declaredQty += Math.round(r.customsAmount / r.unitPrice * 100) / 100;
+        }
+      }
+    }
+  });
+
+  const tbody = $('project-summary-body');
+  let html = '';
+
+  Object.values(map).forEach(p => {
+    const po = PO_QTY_MAP[p.poNo];
+    const poQty      = po ? po.poQty     : p.invoiceQty;
+    const unitPrice  = po ? po.unitPrice : 0;
+
+    const remainQty  = Math.max(0, poQty - p.declaredQty - p.inProgressQty);
+    const remainAmt  = remainQty * unitPrice;
+    const pct        = poQty > 0 ? Math.round((p.declaredQty / poQty) * 100) : 0;
+
+    const remainColor = remainQty > 0 ? '#b45309' : '#15803d';
+    const statusChip  = remainQty > 0
+      ? `<span class="badge" style="background:#fef3c7;color:#b45309;">잔여 ${fmtQ(remainQty)}매</span>`
+      : `<span class="badge badge-green">완료</span>`;
+
+    const progBar = `<div style="display:flex;align-items:center;gap:6px;">
+      <div style="width:60px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${pct===100?'#22c55e':'#f59e0b'};border-radius:3px;"></div>
+      </div>
+      <span style="font-size:10px;color:#6b7280;">${pct}%</span>
+    </div>`;
+
+    html += `<tr>
+      <td style="font-weight:600;color:#111827;text-align:left;">${p.project}</td>
+      <td><span style="background:#f5f3ff;color:#6d28d9;padding:2px 6px;border-radius:4px;font-size:11px;">${p.tmCode}</span></td>
+      <td style="font-family:monospace;font-size:11px;color:#374151;text-align:left;">${p.poNo}</td>
+      <td style="text-align:left;font-size:12px;color:#6b7280;">${p.desc}</td>
+      <td style="font-weight:700;">${fmtQ(poQty)}</td>
+      <td style="color:#15803d;font-weight:700;">${fmtQ(p.declaredQty)}</td>
+      <td style="color:#1d4ed8;">${p.inProgressQty > 0 ? fmtQ(p.inProgressQty) : '—'}</td>
+      <td style="color:${remainColor};font-weight:700;">${remainQty > 0 ? fmtQ(remainQty) : '—'}</td>
+      <td style="text-align:right;color:${remainColor};font-weight:700;">${remainQty > 0 ? fmtUsd(remainAmt) : '—'}</td>
+      <td>${statusChip} ${progBar}</td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = html || `<tr><td colspan="10" style="color:#9ca3af;text-align:center;padding:24px;">데이터 없음</td></tr>`;
+}
+
+// ─── FILTERS ──────────────────────────────────────────────────────────────────
+function applyFilters() {
+  const iv = $('f-invoice').value.trim().toLowerCase();
+  const df = $('f-date-from').value;
+  const dt = $('f-date-to').value;
+  const st = $('f-shipto').value.trim().toLowerCase();
+  const pj = $('f-project').value.trim().toLowerCase();
+  const dc = $('f-desc').value.trim().toLowerCase();
+  const tm = $('f-tmcode').value.trim().toLowerCase();
+  const cs = $('f-customs').value;
+
+  // TSMC 필터 먼저 적용해서 매칭된 TSMC ID 수집
+  const matchedTsmcIds = new Set(
+    DATA.filter(r => r.type === 'tsmc').filter(r => {
+      if (iv && !r.invoiceNo.toLowerCase().includes(iv)) return false;
+      if (df && r.invoiceDate < df) return false;
+      if (dt && r.invoiceDate > dt) return false;
+      if (st && !r.shipTo.toLowerCase().includes(st)) return false;
+      if (pj && !r.origProject.toLowerCase().includes(pj) && !r.bookedProject.toLowerCase().includes(pj)) return false;
+      if (dc && !r.description.toLowerCase().includes(dc)) return false;
+      if (tm && !r.tmCode.toLowerCase().includes(tm)) return false;
+      if (cs && r.customsStatus !== cs) return false;
+      return true;
+    }).map(r => r.id)
+  );
+
+  // 매칭된 TSMC 행 + 그 커스텀 인보이스 행을 함께 포함
+  filtered = DATA.filter(r => {
+    if (r.type === 'tsmc')   return matchedTsmcIds.has(r.id);
+    if (r.type === 'custom') return matchedTsmcIds.has(r.linkedId);
+    return false;
+  });
+
+  renderTable();
+}
+
+function resetFilters() {
+  ['f-invoice','f-shipto','f-project','f-desc','f-tmcode'].forEach(id => $(id).value = '');
+  $('f-date-from').value = '2026-01-01';
+  $('f-date-to').value   = '2026-12-31';
+  $('f-customs').value   = '';
+  filtered = [...DATA];
+  renderTable();
+}
+
+['f-invoice','f-shipto','f-project','f-desc','f-tmcode','f-date-from','f-date-to']
+  .forEach(id => $(id).addEventListener('input', applyFilters));
+$('f-customs').addEventListener('change', applyFilters);
+
+// ─── CUSTOM INVOICE MODAL ────────────────────────────────────────────────────
+function openCustomModal()  { $('custom-modal').classList.add('open'); }
+function closeCustomModal() { $('custom-modal').classList.remove('open'); }
+
+function addCustomInvoice() {
+  const linkedInvoiceNo = $('cm-invoice').value.trim();
+  const date            = $('cm-date').value;
+  const project         = $('cm-project').value.trim();
+  const tmCode          = $('cm-tmcode').value.trim();
+  const desc            = $('cm-desc').value.trim();
+  const qty             = parseFloat($('cm-qty').value) || 0;
+  const customsAmt      = parseFloat($('cm-customs-amt').value) || 0;
+  const poNo            = $('cm-pono').value.trim();
+  const remark          = $('cm-remark').value.trim();
+
+  if (!date || !project || qty <= 0) {
+    alert('날짜, 과제명, 입고 수량은 필수입니다.');
+    return;
+  }
+
+  const pad   = n => String(n).padStart(3,'0');
+  const newId = `ci-${pad(customIdCounter)}`;
+  const newNo = `CUST-${date.replace(/-/g,'')}-${pad(customIdCounter)}`;
+
+  const parent = DATA.find(d => d.type === 'tsmc' && d.invoiceNo === linkedInvoiceNo);
+  if (parent && !parent.linkedId) {
+    parent.linkedId = newId;
+    parent.customsStatus = '부분완료';
+  }
+
+  DATA.push({
+    id: newId, type: 'custom',
+    invoiceDate: date, invoiceNo: newNo,
+    shipTo:         parent?.shipTo         || '',
+    tmCode:         tmCode || parent?.tmCode || '',
+    origProject:    project,
+    bookedProject:  project,
+    description:    desc || ((parent?.description || '') + ' (입고분)'),
+    unitPrice:      0, unit: parent?.unit || 'EA',
+    qty, invoiceAmount: 0, poNo,
+    customsAmount: customsAmt,
+    customsStatus: '수입신고완료',
+    remark,
+    linkedId: parent?.id || null,
+  });
+
+  customIdCounter++;
+  filtered = [...DATA];
+  closeCustomModal();
+  renderTable();
+
+  ['cm-invoice','cm-date','cm-project','cm-tmcode','cm-desc','cm-qty','cm-customs-amt','cm-pono','cm-remark']
+    .forEach(id => $(id).value = '');
+}
+
+renderTable();
+</script>
+</body>
+</html>
