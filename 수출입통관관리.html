@@ -478,7 +478,6 @@ function render(){
             ${st!=='done'?`<button class="btn btn-green btn-sm" onclick="event.stopPropagation();showDeclForm('${g.tmCode}')">통관완료 정보 입력</button>`:''}
           </div>
         </div>
-        ${cls.length>0?`<div class="cl-history" onclick="event.stopPropagation();">${cls.map((c,ci)=>`<div class="cl-row"><span style="color:#9ca3af;font-size:10px;">${ci+1}차</span><span class="cl-no">${c.declNo}</span><span class="cl-date">${c.declDate}</span><span class="cl-amt">${fmtUsd(c.amt)}</span><span style="font-size:10px;color:#9ca3af;">${c.invNo}</span><span class="cl-del" onclick="removeDecl('${g.tmCode}',${ci})">×</span></div>`).join('')}</div>`:''}
         <div class="decl-form hidden" id="df-${g.tmCode}" onclick="event.stopPropagation();">
           <div class="fg"><label>수입신고번호 *</label><input type="text" id="dn-${g.tmCode}" placeholder="12345-26-0012345"></div>
           <div class="fg"><label>신고일 *</label><input type="date" id="dd-${g.tmCode}"></div>
