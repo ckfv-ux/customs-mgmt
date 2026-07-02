@@ -283,7 +283,7 @@ const IP_DATA = [
 
 // ─── 통관 이력: TM Code 레벨 금액 누적 ───────────────────────────────────────
 // clearances[tmCode] = [{invNo, amt, date, declNo, declDate}]
-let clearances = {
+const INIT_CLEARANCES = {
   'TMCODE_36': [
     {invNo:'0K642605068Q', amt:264918.80, date:'2026-05-20', declNo:'12345-26-0012345', declDate:'2026-05-25'}
   ],
@@ -294,6 +294,7 @@ let clearances = {
     {invNo:'0K642605069K', amt:49250, date:'2026-05-28', declNo:'12345-26-0012400', declDate:'2026-06-01'}
   ],
 };
+let clearances = JSON.parse(localStorage.getItem('clearances')||'null') || INIT_CLEARANCES;
 
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
 const YEARS=[2025,2026], CUR_YEAR=2026;
