@@ -284,7 +284,10 @@ const IP_DATA = [
 
 // ─── 통관 이력: TM Code 레벨 금액 누적 ───────────────────────────────────────
 // clearances[tmCode] = [{invNo, amt, date, declNo, declDate}]
-let clearances = JSON.parse(localStorage.getItem('clearances')||'null') || {};
+const INIT_CLEARANCES = {
+  'TMCODE_41': [{invNo:'CUS-2026-0610', amt:15290.98, date:'2026-06-10'}],
+};
+let clearances = JSON.parse(localStorage.getItem('clearances')||'null') || INIT_CLEARANCES;
 
 // ─── 상태 ─────────────────────────────────────────────────────────────────────
 const YEARS=[2025,2026], CUR_YEAR=2026;
@@ -486,9 +489,9 @@ function render(){
           <td style="text-align:right;font-size:11px;color:#374151;">${fmtUsd(row.unitPrice)}</td>
           <td>${fmtQ(row.qty)}</td>
           <td style="text-align:right;font-weight:700;color:#1d4ed8;">${fmtUsd(row.amount)}</td>
-          <td style="background:rgba(240,253,244,.5);font-family:monospace;font-size:11px;color:${latestDecl?'#15803d':'#d1d5db'};">${latestDecl?latestDecl.invNo:'—'}</td>
-          <td style="background:rgba(240,253,244,.5);font-size:11px;color:#6b7280;">${latestDecl?latestDecl.date:'—'}</td>
-          <td style="background:rgba(240,253,244,.5);text-align:right;font-weight:600;font-size:11px;color:${latestDecl?'#15803d':'#d1d5db'};">${latestDecl?fmtUsd(row.amount):'—'}</td>
+          <td style="background:rgba(240,253,244,.5);font-family:monospace;font-size:11px;color:${latestDecl&&row.stage==='FAB'?'#15803d':'#d1d5db'};">${latestDecl&&row.stage==='FAB'?latestDecl.invNo:'—'}</td>
+          <td style="background:rgba(240,253,244,.5);font-size:11px;color:#6b7280;">${latestDecl&&row.stage==='FAB'?latestDecl.date:'—'}</td>
+          <td style="background:rgba(240,253,244,.5);text-align:right;font-weight:600;font-size:11px;color:${latestDecl&&row.stage==='FAB'?'#15803d':'#d1d5db'};">${latestDecl&&row.stage==='FAB'?fmtUsd(latestDecl.amt):'—'}</td>
         </tr>`;
       });
     }
