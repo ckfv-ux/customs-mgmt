@@ -238,9 +238,7 @@ let sourceItems=[];
 try { sourceItems=JSON.parse(localStorage.getItem('customsInvoiceItems')||'[]'); } catch(e){}
 
 if(!sourceItems.length){
-  $('no-items').classList.remove('hidden');
-  $('settings-card').style.display='none';
-  $('source-card').style.display='none';
+  window.location.replace('수출입통관관리.html');
 }
 
 // 편집 가능한 Invoice 라인 (초기값은 원본에서 복사)
