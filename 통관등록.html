@@ -124,7 +124,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR
     </div>
     <div class="card-body" style="padding:10px 20px;">
       <table class="source-tbl">
-        <thead><tr><th>단계</th><th>외주처</th><th>ITEM</th><th>PO No.</th><th>Unit Price</th><th>Qty</th><th>Amount</th></tr></thead>
+        <thead><tr><th>TM CODE</th><th>단계</th><th>외주처</th><th>INVOICE NO.</th><th>INVOICE 일</th><th>ITEM</th><th>U/PRC</th><th>QTY</th><th>INVOICE AMOUNT</th></tr></thead>
         <tbody id="source-body"></tbody>
       </table>
     </div>
@@ -308,10 +308,12 @@ function renderSource(){
   sourceItems.forEach(item=>{
     const tag=item.stage==='FAB'?'<span style="background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;">FAB</span>':'<span style="background:#fef9c3;color:#854d0e;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:700;">IP</span>';
     h+=`<tr>
+      <td style="font-family:monospace;font-size:10px;font-weight:600;">${item.tmCode||'—'}</td>
       <td>${tag}</td>
       <td>${item.vendor}</td>
+      <td style="font-family:monospace;font-size:10px;">${item.invoiceNo||'—'}</td>
+      <td style="font-size:10px;color:#6b7280;">${item.invoiceDate||'—'}</td>
       <td class="l">${item.item}</td>
-      <td style="font-family:monospace;font-size:10px;">${item.poNo||'—'}</td>
       <td style="text-align:right;">$${fmtN(item.unitPrice)}</td>
       <td>${typeof item.qty==='number'&&item.qty%1!==0?item.qty.toFixed(2):item.qty}</td>
       <td style="text-align:right;font-weight:600;color:#1d4ed8;">$${fmtN(item.amount)}</td>
